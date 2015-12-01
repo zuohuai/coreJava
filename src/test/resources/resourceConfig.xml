@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:resource="http://www.my9yu.com/common/resource"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+http://www.my9yu.com/common/resource http://www.my9yu.com/common/resource/resource-1.0.xsd">
+
+	<!-- 静态资源配置 -->
+	<resource:config id="resourceManager">
+		<resource:format location="resource/rebot" type="excel" suffix="xlsx" />
+		<resource:package name="com.eyu.ahxy.rebot.resource" />
+		<resource:class name="com.eyu.ahxy.module.task.resource.TaskConfig" />
+		<resource:class name="com.eyu.ahxy.module.tavern.resource.TavernSetting" />
+		<resource:class name="com.eyu.ahxy.module.hero.resource.BaseHero" />
+	</resource:config>
+	
+</beans>

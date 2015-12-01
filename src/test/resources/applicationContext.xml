@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:resource="http://www.my9yu.com/common/resource"
+	xmlns:socket="http://www.my9yu.com/common/socket" xmlns:ramcache="http://www.my9yu.com/common/ramcache"
+	xmlns:protocol="http://www.my9yu.com/common/protocol"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+http://www.my9yu.com/common/socket http://www.my9yu.com/common/socket/socket-1.0.xsd
+http://www.my9yu.com/common/resource http://www.my9yu.com/common/resource/resource-1.0.xsd
+http://www.my9yu.com/common/ramcache http://www.my9yu.com/common/ramcache/ramcache-1.0.xsd
+http://www.my9yu.com/common/protocol http://www.my9yu.com/common/protocol/protocol-1.0.xsd">
+
+	<!-- AOP拦截配置 -->
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+
+	<!-- 开启注释配置 -->
+	<context:annotation-config />
+
+	<!-- 自动包扫描配置 -->
+	<context:component-scan base-package="
+		com.my9yu.common.socket,
+		com.my9yu.common.console,
+		com.eyu.ahxy.rebot" />
+		
+	<!-- 转换器配置 -->
+	<bean class="org.springframework.context.support.ConversionServiceFactoryBean">
+		<property name="converters">
+			<list>
+				<bean class="com.my9yu.common.resource.support.StringToDateConverter" />
+				<bean class="com.my9yu.common.resource.support.StringToClassConverter" />
+				<bean class="com.my9yu.common.resource.support.JsonToMapConverter" />
+				<bean class="com.my9yu.common.resource.support.JsonToArrayConverter" />
+				<bean class="com.my9yu.common.resource.support.JsonToCollectionConverter" />
+				<bean class="com.my9yu.common.resource.support.JsonToObjectConverter" />
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 配置文件载入配置 -->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>client.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 通信部分的配置 -->
+
+	<!-- 解码器配置 -->
+	<bean id="coder" class="com.my9yu.common.socket.codec.ProtocolCoder" />
+	<protocol:config id="protocol">
+		<protocol:package index="1000" name="com.eyu.ahxy" />
+		<protocol:class index="1" name="com.my9yu.common.utils.model.Result" />
+		<protocol:class index="2" name="com.my9yu.common.utils.model.Page" />
+	</protocol:config>
+	<bean id="jsonCoder" class="com.my9yu.common.socket.codec.JsonCoder" />
+	
+	<socket:client-factory id="clientFactory" config="classpath:client.properties">
+		<socket:coders>
+			<socket:coder format="0" ref="coder" />
+			<socket:coder format="1" ref="jsonCoder" />
+		</socket:coders>
+		<socket:commands scan-beans="true">
+			<socket:include name="com.eyu.ahxy.**.facade.**Push" />
+			<socket:include name="com.eyu.ahxy.**.facade.**Facade" />
+		</socket:commands>
+	</socket:client-factory>
+	
+	<bean id="config" class="com.eyu.ahxy.rebot.Config">
+		<property name="namePrefix" value="${rebot.namePrefix}" />
+		<property name="server" value="${rebot.server}" />
+		<property name="address" value="${rebot.address}" />
+		<property name="clientNum" value="${rebot.clientNum}" />
+		<property name="createSleep" value="${rebot.createSleep}" />
+		<property name="autoCreate" value="${rebot.isAutoCreate}" />
+		<property name="fixed" value="${rebot.isfixed}" />
+		<property name="reSend" value="${rebot.reSend}" />
+	</bean>
+	
+	<!-- 静态资源配置 -->
+	<import resource="resourceConfig.xml" />
+	
+</beans>
