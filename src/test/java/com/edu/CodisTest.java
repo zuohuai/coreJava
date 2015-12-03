@@ -20,8 +20,8 @@ import redis.clients.jedis.Jedis;
 
 import com.edu.codis.JedisResourcePoolFactory;
 import com.edu.common.RedisConfig;
+import com.edu.jackson.JsonUtils;
 import com.edu.javaBean.Person;
-import com.edu.utils.JsonUtils;
 import com.edu.utils.RandomUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -97,6 +97,18 @@ public class CodisTest {
 		Set<String> scoreDatas = jedis.zrangeByScore(sortSetRankName, min, max);
 		long size = jedis.zcard(sortSetRankName);
 		assertEquals(size, scoreDatas.size());
+	}
+
+	@Test
+	public void test_sort_revrange() throws Exception {
+		Jedis jedis = factory.getJedis();
+		String key = "page_rank";
+		int start = 0;
+		int end = 100;
+		Set<String> result = jedis.zrevrange(key, start, end);
+		for (String value : result) {
+			System.out.println(value);
+		}
 	}
 
 	@After

@@ -1,4 +1,4 @@
-package com.edu.utils;
+package com.edu.jackson;
 
 import java.io.StringWriter;
 import java.lang.reflect.Type;
