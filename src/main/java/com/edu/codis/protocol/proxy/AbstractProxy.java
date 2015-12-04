@@ -51,7 +51,7 @@ public abstract class AbstractProxy<T> implements Proxy<T> {
 	}
 	
 	public static int readVarInt32(ByteBuf in, byte tag) throws IOException {
-		// 1### #### (128 - (byte)0x80)
+		// 1### #### (128 - (byte)0x80) 
 		if((tag & FLAG_0X80) == 0) {
 			return tag & 0x7F;
 		}

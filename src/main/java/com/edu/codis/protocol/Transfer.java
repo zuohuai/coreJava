@@ -51,9 +51,12 @@ public class Transfer {
 	 * @throws IOException
 	 */
 	public ByteBuf encode(ByteBufAllocator alloc, Object value) throws IOException {
+		long start = System.currentTimeMillis();
 		ByteBuf buf = alloc.buffer();
 		Context ctx = build(buf);
 		ctx.setValue(value);
+		long end = System.currentTimeMillis();
+		log.error("protocol编码耗时:" + (end - start));
 		return buf;
 	}
 
@@ -64,13 +67,17 @@ public class Transfer {
 	 * @throws IOException
 	 */
 	public Object decode(ByteBuf buf) throws IOException {
+		long start = System.currentTimeMillis();
 		Context ctx = build(buf);
 		if (!buf.isReadable()) {
 			// return null;
 			throw new EOFException("Empty ByteBuffer...");
 		}
 		byte flag = buf.readByte();
-		return ctx.getValue(flag);
+		Object result = ctx.getValue(flag);
+		long end = System.currentTimeMillis();
+		log.error("protocol解码耗时:" + (end - start));
+		return result;
 	}
 
 	/**
