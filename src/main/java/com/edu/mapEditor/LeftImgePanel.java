@@ -13,6 +13,8 @@ import javax.swing.JPanel;
 public class LeftImgePanel extends JPanel{
 	private static final long serialVersionUID = 4769307775499380031L;
 
+	private MapEditorData mapEditorData;
+	
 	public LeftImgePanel(){
 		this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
 		this.setBackground(Color.RED);

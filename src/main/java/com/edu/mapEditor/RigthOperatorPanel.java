@@ -20,6 +20,8 @@ public class RigthOperatorPanel extends JPanel {
 
 	private static final long serialVersionUID = -4680757892101282548L;
 
+	private MapEditorData mapEditorData;
+	
 	public RigthOperatorPanel() {
 
 		// 设置布局
