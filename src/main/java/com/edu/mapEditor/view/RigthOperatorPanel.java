@@ -27,7 +27,7 @@ import com.edu.mapEditor.listener.JBtnSetUpGirdListener;
  * 
  */
 @Component
-public class RigthOperatorPanel extends JPanel  implements ApplicationListener<ContextRefreshedEvent> {
+public class RigthOperatorPanel extends JPanel implements ApplicationListener<ContextRefreshedEvent> {
 
 	private static final long serialVersionUID = -4680757892101282548L;
 	@Autowired
@@ -43,9 +43,15 @@ public class RigthOperatorPanel extends JPanel  implements ApplicationListener<C
 	@Autowired
 	private JBtnEditorGirdListener editorGirdListenr;
 
-	public RigthOperatorPanel() {
+	private JButton btnOpen = new JButton("打开文件");
+	private JButton btnExportFile = new JButton("导出文件");
+	private JButton btnExitSystem = new JButton("退出系统");
+	private JButton btnSetGird = new JButton("设置网格");
+	private JButton btnCancelGird = new JButton("取消网格");
+	private JButton btnEditorGird = new JButton("编辑网格");
+	private JButton btnSetPixel = new JButton("设置像素");
 
-	
+	public RigthOperatorPanel() {
 
 	}
 
@@ -70,21 +76,66 @@ public class RigthOperatorPanel extends JPanel  implements ApplicationListener<C
 		BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
 		this.setLayout(layout);
 
-		JButton btnOpen = new JButton("打开文件");
-		JButton btnExportFile = new JButton("导出文件");
-		JButton btnExitSystem = new JButton("退出系统");
-		JButton btnSetGird = new JButton("设置网格");
-		JButton btnCancelGird = new JButton("取消网格");
-		JButton btnEditorGird = new JButton("编辑网格");
-		JButton btnSetPixel = new JButton("设置像素");
-
 		this.addButton(Ids.BTN_OPEN_FILE, btnOpen, openFileListener);
 		this.addButton(Ids.BTN_EXPORT_FILE, btnExportFile);
-		this.addButton(Ids.BTN_EXIT_FILE, btnExitSystem,exitListener);
+		this.addButton(Ids.BTN_EXIT_FILE, btnExitSystem, exitListener);
 		this.addButton(Ids.BTN_SET_UP_GIRD, btnSetGird, setUpGirdListener);
 		this.addButton(Ids.BTN_CANCEL_GIRD, btnCancelGird);
 		this.addButton(Ids.BTN_EDITOR_GIRD, btnEditorGird);
 		this.addButton(Ids.BTN_SET_PIXEL, btnSetPixel, inputPixedListener);
-		
 	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public JBtnOpenFileListener getOpenFileListener() {
+		return openFileListener;
+	}
+
+	public JBtnExitListener getExitListener() {
+		return exitListener;
+	}
+
+	public JBtnInputPixedListener getInputPixedListener() {
+		return inputPixedListener;
+	}
+
+	public JBtnSetUpGirdListener getSetUpGirdListener() {
+		return setUpGirdListener;
+	}
+
+	public JBtnEditorGirdListener getEditorGirdListenr() {
+		return editorGirdListenr;
+	}
+
+	public JButton getBtnOpen() {
+		return btnOpen;
+	}
+
+	public JButton getBtnExportFile() {
+		return btnExportFile;
+	}
+
+	public JButton getBtnExitSystem() {
+		return btnExitSystem;
+	}
+
+	public JButton getBtnSetGird() {
+		return btnSetGird;
+	}
+
+	public JButton getBtnCancelGird() {
+		return btnCancelGird;
+	}
+
+	public JButton getBtnEditorGird() {
+		return btnEditorGird;
+	}
+
+	public JButton getBtnSetPixel() {
+		return btnSetPixel;
+	}
+	
+	
 }
