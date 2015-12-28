@@ -6,23 +6,19 @@ import java.awt.event.ActionListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.edu.mapEditor.MapEditorData;
+import com.edu.mapEditor.service.SetUpGirdService;
 
 /**
- * 编辑路径的监听器
+ * 设置单位像素
  * @author zuohuai
- *
  */
 @Component
-public class JBtnEditorGirdListener implements ActionListener{
+public class JBtnSetGirdListener implements ActionListener {
 	@Autowired
-	private MapEditorData mapEditorData;
+	private SetUpGirdService setUpGirdService;
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(mapEditorData.isEditorGird()){
-			mapEditorData.modifyEditorGird(false);	
-		}else{
-			mapEditorData.modifyEditorGird(true);	
-		}	
+		setUpGirdService.setUpGird();
 	}
 }

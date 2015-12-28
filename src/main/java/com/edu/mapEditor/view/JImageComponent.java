@@ -64,6 +64,7 @@ public class JImageComponent extends JComponent implements ApplicationListener<C
 
 		// 设置绘制状态
 		mapEditorData.modifyDrawLine(false);
+		this.mapEditorData.modiyfImgSize(this.bufferedImage.getWidth(), this.bufferedImage.getHeight());
 	}
 
 	public Graphics getImageGraphics() {
@@ -85,6 +86,7 @@ public class JImageComponent extends JComponent implements ApplicationListener<C
 
 		// 设置文件的路径
 		this.mapEditorData.modifyImgPath(imageLocation.getAbsolutePath());
+		this.mapEditorData.modifyImgName(imageLocation.getName());
 		//this.repaint();
 	}
 

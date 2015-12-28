@@ -11,9 +11,7 @@ import com.edu.mapEditor.MapEditorData;
 
 /**
  * 左侧图片面板
- * 
  * @author Administrator
- *
  */
 @Component
 public class LeftImgePanel extends JPanel {
@@ -21,21 +19,10 @@ public class LeftImgePanel extends JPanel {
 	/** 核心数据存储 */
 	@Autowired
 	private MapEditorData mapEditorData;
-	/** 图片组件 */
-	@Autowired
-	private JImageComponent jImageComponent;
 
 	public LeftImgePanel() {
 		this.setLayout(null);
 		this.setBackground(Color.RED);
 	}
 
-	public MapEditorData getMapEditorData() {
-		return mapEditorData;
-	}
-
-	public JImageComponent getjImageComponent() {
-		return jImageComponent;
-	}
-	
 }

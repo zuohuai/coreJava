@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.edu.mapEditor.MapEditorData;
+import com.edu.mapEditor.model.State;
 import com.edu.mapEditor.view.JImageComponent;
 
 /**
@@ -50,6 +51,10 @@ public class JImageListener extends MouseInputAdapter {
 			// 修改数据存储中的坐标位置
 			mapEditorData.modiyfImgPosition(component.getX(), component.getY());
 		} else if (modify == InputEvent.BUTTON1_MASK) {
+			//如果不需要绘图，则不处理
+			if(!mapEditorData.isEditorGird()){
+				return;
+			}
 			drawPoint(e);
 		}
 
@@ -64,6 +69,10 @@ public class JImageListener extends MouseInputAdapter {
 			// 得到当前坐标点
 			point = SwingUtilities.convertPoint(component, e.getPoint(), component.getParent());
 		} else if (modify == InputEvent.BUTTON1_MASK) {
+			//如果不需要绘图，则不处理
+			if(!mapEditorData.isEditorGird()){
+				return;
+			}
 			drawPoint(e);
 		}
 
@@ -96,6 +105,8 @@ public class JImageListener extends MouseInputAdapter {
 		//将颜色还原
 		g.setColor(c);
 		g2d.setComposite(current);
+		
+		mapEditorData.modifyPoint(com.edu.mapEditor.model.Point.valueOf(afterX, afterY), State.UNBLOCK);
 		this.component.repaint();
 	}
 

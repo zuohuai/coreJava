@@ -13,11 +13,13 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 import com.edu.mapEditor.MapEditorData;
+import com.edu.mapEditor.listener.JBtnCancelLineListener;
 import com.edu.mapEditor.listener.JBtnEditorGirdListener;
 import com.edu.mapEditor.listener.JBtnExitListener;
+import com.edu.mapEditor.listener.JBtnExportListener;
 import com.edu.mapEditor.listener.JBtnInputPixedListener;
 import com.edu.mapEditor.listener.JBtnOpenFileListener;
-import com.edu.mapEditor.listener.JBtnSetUpGirdListener;
+import com.edu.mapEditor.listener.JBtnSetGirdListener;
 import com.edu.mapEditor.model.Ids;
 
 /**
@@ -39,9 +41,13 @@ public class RigthOperatorPanel extends JPanel implements ApplicationListener<Co
 	@Autowired
 	private JBtnInputPixedListener inputPixedListener;
 	@Autowired
-	private JBtnSetUpGirdListener setUpGirdListener;
+	private JBtnSetGirdListener setUpGirdListener;
 	@Autowired
 	private JBtnEditorGirdListener editorGirdListenr;
+	@Autowired
+	private JBtnCancelLineListener cancelLineListener;
+	@Autowired
+	private JBtnExportListener exportListener;
 
 	private JButton btnOpen = new JButton("打开文件");
 	private JButton btnExportFile = new JButton("导出文件");
@@ -77,11 +83,11 @@ public class RigthOperatorPanel extends JPanel implements ApplicationListener<Co
 		this.setLayout(layout);
 
 		this.addButton(Ids.BTN_OPEN_FILE, btnOpen, openFileListener);
-		this.addButton(Ids.BTN_EXPORT_FILE, btnExportFile);
+		this.addButton(Ids.BTN_EXPORT_FILE, btnExportFile, exportListener);
 		this.addButton(Ids.BTN_EXIT_FILE, btnExitSystem, exitListener);
 		this.addButton(Ids.BTN_SET_UP_GIRD, btnSetGird, setUpGirdListener);
-		this.addButton(Ids.BTN_CANCEL_GIRD, btnCancelGird);
-		this.addButton(Ids.BTN_EDITOR_GIRD, btnEditorGird);
+		this.addButton(Ids.BTN_CANCEL_GIRD, btnCancelGird,cancelLineListener);
+		this.addButton(Ids.BTN_EDITOR_GIRD, btnEditorGird, editorGirdListenr);
 		this.addButton(Ids.BTN_SET_PIXEL, btnSetPixel, inputPixedListener);
 	}
 
@@ -101,7 +107,7 @@ public class RigthOperatorPanel extends JPanel implements ApplicationListener<Co
 		return inputPixedListener;
 	}
 
-	public JBtnSetUpGirdListener getSetUpGirdListener() {
+	public JBtnSetGirdListener getSetUpGirdListener() {
 		return setUpGirdListener;
 	}
 
