@@ -10,7 +10,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
-import com.edu.mapEditor.Location;
+import com.edu.mapEditor.model.Location;
 
 @Component
 public class MapEditorFrame extends JFrame implements ApplicationListener<ContextRefreshedEvent> {

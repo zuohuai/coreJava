@@ -26,6 +26,7 @@ public class MainMapEditor implements Runnable {
 		}
 	}
 
+	//这种方案
 	@Override
 	public void run() {
 		while (true) {

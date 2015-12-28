@@ -1,4 +1,4 @@
-package com.edu.mapEditor;
+package com.edu.mapEditor.model;
 
 /**
  * 所有组件的名称

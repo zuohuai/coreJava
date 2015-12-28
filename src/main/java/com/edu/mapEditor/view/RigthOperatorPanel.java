@@ -12,13 +12,13 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
-import com.edu.mapEditor.Ids;
 import com.edu.mapEditor.MapEditorData;
 import com.edu.mapEditor.listener.JBtnEditorGirdListener;
 import com.edu.mapEditor.listener.JBtnExitListener;
 import com.edu.mapEditor.listener.JBtnInputPixedListener;
 import com.edu.mapEditor.listener.JBtnOpenFileListener;
 import com.edu.mapEditor.listener.JBtnSetUpGirdListener;
+import com.edu.mapEditor.model.Ids;
 
 /**
  * 右侧面板

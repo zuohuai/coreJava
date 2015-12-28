@@ -1,4 +1,4 @@
-package com.edu.mapEditor;
+package com.edu.mapEditor.model;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;

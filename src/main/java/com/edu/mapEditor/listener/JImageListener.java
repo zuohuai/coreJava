@@ -1,7 +1,10 @@
 package com.edu.mapEditor.listener;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
@@ -47,7 +50,7 @@ public class JImageListener extends MouseInputAdapter {
 			// 修改数据存储中的坐标位置
 			mapEditorData.modiyfImgPosition(component.getX(), component.getY());
 		} else if (modify == InputEvent.BUTTON1_MASK) {
-			System.out.println("左边鼠标被拖动");
+			drawPoint(e);
 		}
 
 	}
@@ -61,31 +64,43 @@ public class JImageListener extends MouseInputAdapter {
 			// 得到当前坐标点
 			point = SwingUtilities.convertPoint(component, e.getPoint(), component.getParent());
 		} else if (modify == InputEvent.BUTTON1_MASK) {
-			int currentX = e.getX();
-			int currentY = e.getY();
-
-			int numX = currentX / mapEditorData.getPrixel();
-			int numY = currentY / mapEditorData.getPrixel();
-
-			System.out.println("current:" + currentX + "," + currentY);
-			System.out.println("num:" + numX + "," + numY);
-
-			int afterX = mapEditorData.getPrixel() * numX;
-			int afterY = mapEditorData.getPrixel() * numY;
-			System.out.println("after:" + afterX + "," + afterY);
-			Graphics g = this.component.getGraphics();
-			Color c = g.getColor();
-			g.setColor(new Color(0, 255, 0));
-			g.fillRect(afterX, afterY, mapEditorData.getPrixel(), mapEditorData.getPrixel());
-			g.setColor(new Color(255, 0, 0));
-			g.drawRect(afterX, afterY, mapEditorData.getPrixel(), mapEditorData.getPrixel());
-			g.setColor(c);
-			this.component.repaint();
+			drawPoint(e);
 		}
 
+	}
+
+	private void drawPoint(MouseEvent e) {
+		int currentX = e.getX();
+		int currentY = e.getY();
+
+		int numX = currentX / mapEditorData.getPrixel();
+		int numY = currentY / mapEditorData.getPrixel();
+
+		System.out.println("current:" + currentX + "," + currentY);
+		System.out.println("num:" + numX + "," + numY);
+
+		int afterX = mapEditorData.getPrixel() * numX;
+		int afterY = mapEditorData.getPrixel() * numY;
+		System.out.println("after:" + afterX + "," + afterY);
+		Graphics g = this.component.getGraphics();
+		Color c = g.getColor();
+		
+		Graphics2D g2d = (Graphics2D) g;
+		// 设置透明度
+		Composite current = g2d.getComposite();
+		AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f);
+		g2d.setComposite(ac);
+
+		g2d.fill3DRect(afterX, afterY, mapEditorData.getPrixel(), mapEditorData.getPrixel(), false);
+		g2d.draw3DRect(afterX, afterY, mapEditorData.getPrixel(), mapEditorData.getPrixel(), false);
+		//将颜色还原
+		g.setColor(c);
+		g2d.setComposite(current);
+		this.component.repaint();
 	}
 
 	public JImageComponent getComponent() {
 		return component;
 	}
+	
 }
