@@ -13,6 +13,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="id" value="${codis.server.id}" />
 		<property name="address" value="${codis.server.address}" />
 		<property name="proxy" value="${codis.server.zk.proxy}" />
+		<property name="password" value="${codis.server.password}" />
 	</bean>
 
 </beans>

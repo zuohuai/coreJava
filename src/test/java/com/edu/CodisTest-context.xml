@@ -78,7 +78,9 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	</bean>
 
 	<!-- 自动包扫描配置 -->
-	<context:component-scan base-package="com.edu"></context:component-scan>
+	<context:component-scan base-package="com.edu">
+	    <context:exclude-filter type="regex" expression="com.edu.mapEditor\..*"/>
+	</context:component-scan>
 	<!-- 公用资源配置 -->
 	<import resource="applicationConfig.xml" />
 </beans>

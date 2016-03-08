@@ -48,7 +48,7 @@ public class JedisResourcePoolFactory implements
 		if (!init) {
 			jedisResourcePool = RoundRobinJedisPool.create()
 					.curatorClient(redisConfig.getAddress(), 30000)
-					.zkProxyDir(redisConfig.getProxy()).build();
+					.zkProxyDir(redisConfig.getProxy()).password(redisConfig.getPassword()).build();
 		}
 	}
 
@@ -61,7 +61,7 @@ public class JedisResourcePoolFactory implements
 		if (jedisResourcePool != null) {
 			try {
 				jedisResourcePool.close();
-			} catch (IOException e) {
+			} catch (IOException e) { 
 				LOGGER.error("关闭redis连接池出现异常", e);
 			}
 		}

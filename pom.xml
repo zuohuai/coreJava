@@ -20,10 +20,24 @@
 	</properties>
 
 	<dependencies>
+		<!-- 高性能,并发框架(JMS处理) Disruptor -->
+		<dependency>
+			<groupId>com.lmax</groupId>
+			<artifactId>disruptor</artifactId>
+			<version>3.3.4</version>
+		</dependency>
+
+
 		<dependency>
 			<groupId>com.wandoulabs.jodis</groupId>
 			<artifactId>jodis</artifactId>
 			<version>0.2.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.wandoulabs.nedis</groupId>
+			<artifactId>codis-client</artifactId>
+			<version>0.1.1</version>
 		</dependency>
 
 		<!-- 日志依赖 -->
@@ -169,6 +183,12 @@
 			<artifactId>netty-buffer</artifactId>
 			<version>${netty.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.9</version>
+		</dependency>
+
 	</dependencies>
 
 
@@ -179,8 +199,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.8</source>
+					<target>1.8</target>
 					<encoding>utf-8</encoding>
 				</configuration>
 			</plugin>
