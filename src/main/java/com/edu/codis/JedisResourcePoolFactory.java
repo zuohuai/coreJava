@@ -11,11 +11,11 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
-import redis.clients.jedis.Jedis;
-
 import com.edu.common.RedisConfig;
 import com.wandoulabs.jodis.JedisResourcePool;
 import com.wandoulabs.jodis.RoundRobinJedisPool;
+
+import redis.clients.jedis.Jedis;
 
 /**
  * Jedis连接工厂
