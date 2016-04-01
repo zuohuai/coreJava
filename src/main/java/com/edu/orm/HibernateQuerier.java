@@ -27,12 +27,12 @@ public class HibernateQuerier extends HibernateDaoSupport implements Querier {
 
 	@Override
 	public <T> List<T> list(Class<T> clz, String queryname, Object... params) {
-		return getHibernateTemplate().findByNamedQuery(queryname, params);
+		return (List<T>) getHibernateTemplate().findByNamedQuery(queryname, params);
 	}
 
 	@Override
 	public <E> List<E> list(Class entityClz, Class<E> retClz, final String queryname, final Object... params) {
-		return getHibernateTemplate().findByNamedQuery(queryname, params);
+		return (List<E>) getHibernateTemplate().findByNamedQuery(queryname, params);
 	}
 
 	@Override
