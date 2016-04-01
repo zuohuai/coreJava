@@ -55,11 +55,11 @@ public class Definition {
 	// 类型定义
 	private AtomicInteger typeCurrent = new AtomicInteger();
 	private ConcurrentMap<Integer, TypeDef> typeIdxs = new ConcurrentHashMap<Integer, TypeDef>();
-	private ConcurrentMap<Type, TypeDef> typeDefs = new ConcurrentHashMap<>();
+	private ConcurrentMap<Type, TypeDef> typeDefs = new ConcurrentHashMap<Type, TypeDef>();
 	// 类型映射
-	private ConcurrentMap<Type, TypeDef> aliasDefs = new ConcurrentHashMap<>();
+	private ConcurrentMap<Type, TypeDef> aliasDefs = new ConcurrentHashMap<Type, TypeDef>();
 	// MAP对象
-	private ConcurrentMap<Type, TypeDef> mappedDefs = new ConcurrentHashMap<>();
+	private ConcurrentMap<Type, TypeDef> mappedDefs = new ConcurrentHashMap<Type, TypeDef>();
 	// 代理类
 	private ConcurrentMap<Byte, Proxy<?>> proxys = new ConcurrentHashMap<Byte, Proxy<?>>();
 
@@ -183,7 +183,7 @@ public class Definition {
 	 */
 	public byte[] getDescription() {
 		if (description == null) {
-			List<Type> all = new ArrayList<>(typeDefs.size() + enumDefs.size());
+			List<Type> all = new ArrayList<Type>(typeDefs.size() + enumDefs.size());
 			// 类型
 			List<TypeDef> defs = new ArrayList<TypeDef>(typeDefs.values());
 			Collections.sort(defs);
