@@ -1,0 +1,154 @@
+重入锁（ReentrantLock）是一种递归无阻塞的同步机制。以前一直认为它是synchronized的简单替代，而且实现机制也不相差太远。不过最近实践过程中发现它们之间还是有着天壤之别。
+以下是官方说明：一个可重入的互斥锁定 Lock，它具有与使用 synchronized 方法和语句所访问的隐式监视器锁定相同的一些基本行为和语义，但功能更强大。ReentrantLock 将由最近成功获得锁定，并且还没有释放该锁定的线程所拥有。当锁定没有被另一个线程所拥有时，调用 lock 的线程将成功获取该锁定并返回。如果当前线程已经拥有该锁定，此方法将立即返回。可以使用 isHeldByCurrentThread() 和 getHoldCount() 方法来检查此情况是否发生。
+它提供了lock()方法：
+如果该锁定没有被另一个线程保持，则获取该锁定并立即返回，将锁定的保持计数设置为 1。
+如果当前线程已经保持该锁定，则将保持计数加 1，并且该方法立即返回。
+如果该锁定被另一个线程保持，则出于线程调度的目的，禁用当前线程，并且在获得锁定之前，该线程将一直处于休眠状态，此时锁定保持计数被设置为 1。
+最近在研究Java concurrent中关于任务调度的实现时，读了延迟队列DelayQueue的一些代码，比如take()。该方法的主要功能是从优先队列（PriorityQueue）取出一个最应该执行的任务（最优值），如果该任务的预订执行时间未到，则需要wait这段时间差。反之，如果时间到了，则返回该任务。而offer()方法是将一个任务添加到该队列中。
+后来产生了一个疑问：如果最应该执行的任务是一个小时后执行的，而此时需要提交一个10秒后执行的任务，会出现什么状况？还是先看看take()的源代码：
+<!---->
+public E take() throws InterruptedException {
+
+                final ReentrantLock lock = this.lock;
+
+                lock.lockInterruptibly();
+
+                try {
+
+                    for (;;) {
+
+                        E first = q.peek();
+
+                        if (first == null) {
+
+                            available.await();
+
+                        } else {
+
+                            long delay =  first.getDelay(TimeUnit.NANOSECONDS);
+
+                            if (delay > 0) {
+
+                                long tl = available.awaitNanos(delay);
+
+                            } else {
+
+                                E x = q.poll();
+
+                                assert x != null;
+
+                                if (q.size() != 0)
+
+                                    available.signalAll(); // wake up other takers
+
+                                return x;
+
+                            }
+
+                        }
+
+                    }
+
+                } finally {
+
+                    lock.unlock();
+
+                }
+
+            }
+而以下是offer()的源代码:
+public boolean offer(E e) {
+
+                final ReentrantLock lock = this.lock;
+
+                lock.lock();
+
+                try {
+
+                    E first = q.peek();
+
+                    q.offer(e);
+
+                    if (first == null || e.compareTo(first) < 0)
+
+                        available.signalAll();
+
+                    return true;
+
+                } finally {
+
+                    lock.unlock();
+
+                }
+
+            }
+ 
+如代码所示，take()和offer()都是lock了重入锁。如果按照synchronized的思维（使用诸如synchronized(obj)的方法），这两个方法是互斥的。回到刚才的疑问，take()方法需要等待1个小时才能返回，而offer()需要马上提交一个10秒后运行的任务，会不会一直等待take()返回后才能提交呢？答案是否定的，通过编写验证代码也说明了这一点。这让我对重入锁有了更大的兴趣，它确实是一个无阻塞的锁。
+下面的代码也许能说明问题：运行了4个线程，每一次运行前打印lock的当前状态。运行后都要等待5秒钟。
+public static void main(String[] args) throws InterruptedException {
+
+              final ExecutorService exec = Executors.newFixedThreadPool(4);
+
+              final ReentrantLock lock = new ReentrantLock();
+
+              final Condition con = lock.newCondition();
+
+              final int time = 5;
+
+              final Runnable add = new Runnable() {
+
+                public void run() {
+
+                  System.out.println("Pre " + lock);
+
+                  lock.lock();
+
+                  try {
+
+                    con.await(time, TimeUnit.SECONDS);
+
+                  } catch (InterruptedException e) {
+
+                    e.printStackTrace();
+
+                  } finally {
+
+                    System.out.println("Post " + lock.toString());
+
+                    lock.unlock();
+
+                  }
+
+                }
+
+              };
+
+              for(int index = 0; index < 4; index++)
+
+                exec.submit(add);
+
+              exec.shutdown();
+
+            }
+ 
+这是它的输出：
+Pre ReentrantLock@a59698[Unlocked]
+Pre ReentrantLock@a59698[Unlocked]
+Pre ReentrantLock@a59698[Unlocked]
+Pre ReentrantLock@a59698[Unlocked]
+Post ReentrantLock@a59698[Locked by thread pool-1-thread-1]
+Post ReentrantLock@a59698[Locked by thread pool-1-thread-2]
+Post ReentrantLock@a59698[Locked by thread pool-1-thread-3]
+Post ReentrantLock@a59698[Locked by thread pool-1-thread-4]
+每一个线程的锁状态都是“Unlocked”,所以都可以运行。但在把con.await改成Thread.sleep(5000)时，输出就变成了：
+Pre ReentrantLock@a59698[Unlocked]
+Pre ReentrantLock@a59698[Locked by thread pool-1-thread-1]
+Pre ReentrantLock@a59698[Locked by thread pool-1-thread-1]
+Pre ReentrantLock@a59698[Locked by thread pool-1-thread-1]
+Post ReentrantLock@a59698[Locked by thread pool-1-thread-1]
+Post ReentrantLock@a59698[Locked by thread pool-1-thread-2]
+Post ReentrantLock@a59698[Locked by thread pool-1-thread-3]
+Post ReentrantLock@a59698[Locked by thread pool-1-thread-4]
+以上的对比说明线程在等待时(con.await)，已经不在拥有（keep）该锁了，所以其他线程就可以获得重入锁了。
+有必要会过头再看看Java官方的解释：“如果该锁定被另一个线程保持，则出于线程调度的目的，禁用当前线程，并且在获得锁定之前，该线程将一直处于休眠状态”。我对这里的“保持”的理解是指非wait状态外的所有状态，比如线程Sleep、for循环等一切有CPU参与的活动。一旦线程进入wait状态后，它就不再keep这个锁了，其他线程就可以获得该锁；当该线程被唤醒（触发信号或者timeout）后，就接着执行，会重新“保持”锁，当然前提依然是其他线程已经不再“保持”了该重入锁。
+总结一句话：对于重入锁而言，"lock"和"keep"是两个不同的概念。lock了锁，不一定keep锁，但keep了锁一定已经lock了锁。

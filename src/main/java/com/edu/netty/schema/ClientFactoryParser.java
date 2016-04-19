@@ -8,6 +8,11 @@ import org.w3c.dom.Element;
 
 import com.edu.netty.client.ClientFactory;
 
+/**
+ * 手动创建一个Bean
+ * @author Administrator
+ *
+ */
 public class ClientFactoryParser extends AbstractBeanDefinitionParser {
 
 	@Override
@@ -16,4 +21,5 @@ public class ClientFactoryParser extends AbstractBeanDefinitionParser {
 		return builder.getBeanDefinition();
 	}
 
+	
 }
