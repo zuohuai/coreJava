@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://www.corejava.com/common/socket" xmlns="http://www.corejava.com/common/socket"
+	elementFormDefault="qualified">
+
+	<!-- 客户端配置元素 -->
+	<xsd:element name="client-factory">
+		<xsd:complexType>
+			<!-- 属性部分 -->
+			<xsd:attribute name="id" type="xsd:ID" use="required" />
+			<xsd:attribute name="depends-on" type="xsd:string" use="optional" />
+			<xsd:attribute name="clone" type="xsd:boolean" use="optional"
+				default="true" />
+		</xsd:complexType>
+	</xsd:element>
+
+</xsd:schema>
