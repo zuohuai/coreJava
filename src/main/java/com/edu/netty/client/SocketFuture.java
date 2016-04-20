@@ -41,7 +41,7 @@ public class SocketFuture<T> implements Future<T> {
 			this.completed = true;
 			this.cancelled = true;
 
-			// TODO
+			// TODO 这句话是什么意思？！
 			notifyAll();
 		}
 

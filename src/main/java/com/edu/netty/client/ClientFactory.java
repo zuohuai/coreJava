@@ -12,14 +12,23 @@ import java.util.concurrent.locks.ReentrantLock;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.net.SocketServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MessageFormatter;
 
+import com.edu.netty.SocketException;
+import com.edu.netty.handler.SnGenerator;
 import com.edu.utils.DelayedElement;
+import com.edu.utils.NamedThreadFactory;
 
+import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.nio.NioSocketChannel;
 
 public class ClientFactory {
 
@@ -31,7 +40,14 @@ public class ClientFactory {
 	private final ConcurrentHashMap<String, Lock> locks = new ConcurrentHashMap<String, Lock>();
 	/** 过期客户端移除队列 */
 	private final DelayQueue<DelayedElement<SimpleClient>> delays = new DelayQueue<DelayedElement<SimpleClient>>();
+	/** SID 生成器 */
+	private final SnGenerator sn = new SnGenerator();
+	/** 最大重试次数，超过次数未连接则抛弃Client */
+	private static final int MAX_RETRY = 10;
+	/** 与{@link SocketServer}的连接 */
+	private volatile Bootstrap connector = null;
 
+	private EventLoopGroup group = null;
 	/** 客户端过期时间(秒) */
 	private int remoteTimes = 300;
 
@@ -58,8 +74,8 @@ public class ClientFactory {
 						DelayedElement<SimpleClient> e = delays.take();
 						SimpleClient client = e.getContent();
 						boolean delay = checkRemove(client);
-						if(delay){
-							submintRemove(client);
+						if (delay) {
+							submitRemove(client);
 						}
 					} catch (InterruptedException e) {
 						LOGGER.error("过期客户端清理线程被中断", e);
@@ -74,20 +90,27 @@ public class ClientFactory {
 	}
 
 	private void bootstrap0() {
+		connector = new Bootstrap();
 
+		// 设置会话配置
+
+		group = new NioEventLoopGroup(1, new NamedThreadFactory("客户端NIO线程"));
+		connector.group(group);
+		connector.channel(NioSocketChannel.class);
+
+		connector.handler(new ClientInitializer());
 	}
 
 	/**
 	 * 提交移除非活跃客户端的移除任务
 	 * @param client
 	 */
-	private void submintRemove(SimpleClient client) {
+	private void submitRemove(SimpleClient client) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.SECOND, remoteTimes);
 
 		DelayedElement<SimpleClient> element = DelayedElement.valueOf(client, calendar.getTime());
 		delays.put(element);
-		;
 	}
 
 	private boolean checkRemove(SimpleClient client) {
@@ -120,6 +143,7 @@ public class ClientFactory {
 		}
 		Lock lock = loadClientLock(address);
 		try {
+			// 根据地址来移除
 			clients.remove(address, client);
 		} finally {
 			lock.unlock();
@@ -131,7 +155,6 @@ public class ClientFactory {
 
 	/**
 	 * 获取指定地址对应的的通信客户端
-	 * 
 	 * @param address
 	 * @param keepAlive
 	 * @return
@@ -157,6 +180,7 @@ public class ClientFactory {
 					client.keepAlive = keepAlive;
 				}
 			}
+			return client;
 		} catch (Exception e) {
 			// 移除客戶端锁
 			removeClientLock(address);
@@ -166,7 +190,6 @@ public class ClientFactory {
 		} finally {
 			lock.unlock();
 		}
-		return null;
 	}
 
 	private Lock loadClientLock(String address) {
@@ -177,12 +200,11 @@ public class ClientFactory {
 
 		result = new ReentrantLock();
 		Lock prev = locks.putIfAbsent(address, result);
-		return result == null ? result : prev;
+		return result != null ? result : prev;
 	}
 
 	/**
 	 * 移除客户端锁
-	 * 
 	 * @param address
 	 */
 	private void removeClientLock(String address) {
@@ -233,14 +255,56 @@ public class ClientFactory {
 		}
 
 		@Override
-		public void close() {
-			// TODO Auto-generated method stub
+		public synchronized void close() {
+			if (channel == null || !channel.isActive()) {
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("已经关闭与服务器[{}的连接]", address);
+				}
+				return;
+			}
 
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("准备关闭与服务器[{}]的连接", address);
+			}
+
+			// 关闭连接和释放对象资源
+			ChannelFuture future = channel.close();
+			future.awaitUninterruptibly();
+			channel = null;
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("已经关闭与服务器[{}]的连接", address);
+			}
 		}
 
 		@Override
 		public synchronized void connect() {
-			// TODO Auto-generated method stub
+			if (channel != null && channel.isActive()) {
+				return;
+			}
+
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("开始连接服务器[{}]", address);
+			}
+
+			retry++;
+			try {
+				ChannelFuture future = connector.connect(address);
+				future.sync();
+				Channel channel = future.channel();
+				sessionId = sn.next();
+				this.channel = channel;
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("与服务器[{}]连接成功,本地连接", address, channel.localAddress());
+				}
+				retry = 0;
+				submitRemove(this);;
+			} catch (Throwable e) {
+				if (retry > MAX_RETRY) {
+					close();
+				}
+				e.printStackTrace();
+				throw new SocketException(e);
+			}
 
 		}
 
@@ -281,14 +345,47 @@ public class ClientFactory {
 		@Override
 		public void disableKeepAlive() {
 			keepAlive = false;
-
-			// submitRemove(this); TODO 提交延迟销毁
+			submitRemove(this);
 		}
 
 		@Override
 		public String getAddress() {
 			return fromInetSocketAddress(address);
 		}
+
+		// 重写hashcode 和 equals方法
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + getOuterType().hashCode();
+			result = prime * result + ((address == null) ? 0 : address.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			SimpleClient other = (SimpleClient) obj;
+			if (!getOuterType().equals(other.getOuterType()))
+				return false;
+			if (address == null) {
+				if (other.address != null)
+					return false;
+			} else if (!address.equals(other.address))
+				return false;
+			return true;
+		}
+
+		private ClientFactory getOuterType() {
+			return ClientFactory.this;
+		}
+
 	}
 
 }
