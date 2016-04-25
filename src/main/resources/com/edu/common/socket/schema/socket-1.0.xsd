@@ -11,6 +11,8 @@
 			<xsd:attribute name="depends-on" type="xsd:string" use="optional" />
 			<xsd:attribute name="clone" type="xsd:boolean" use="optional"
 				default="true" />
+			<xsd:attribute name="config" type="xsd:string" use="optional"
+				default="true" />
 		</xsd:complexType>
 	</xsd:element>
 
