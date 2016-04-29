@@ -32,7 +32,7 @@ public class ParserHelper {
 		BeanDefinitionRegistry registry = parserContext.getRegistry();
 
 		String name = id + ClientConfig.BEAN_NAME_SUFFIX;
-		registry.registerBeanDefinition(name, result);;
+		registry.registerBeanDefinition(name, result);
 		return new RuntimeBeanReference(name);
 	}
 }

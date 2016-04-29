@@ -17,10 +17,11 @@ import com.edu.netty.conf.ClientConfig;
  * @author Administrator
  *
  */
-public class ClientFactoryParser extends AbstractBeanDefinitionParser {
+public class ClientFactoryParser  extends AbstractBeanDefinitionParser {
 
 	@Override
 	protected AbstractBeanDefinition parseInternal(Element element, ParserContext parserContext) {
+		System.out.println("parseInternal !!!");
 		BeanDefinitionBuilder builder = BeanDefinitionBuilder.rootBeanDefinition(ClientFactory.class);
 		
 		//添加依赖 TODO
@@ -38,6 +39,4 @@ public class ClientFactoryParser extends AbstractBeanDefinitionParser {
 		
 		return builder.getBeanDefinition();
 	}
-
-	
 }
