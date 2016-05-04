@@ -7,15 +7,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.eyu.ahxy.module.fight.service.alter.Alter;
-import com.eyu.ahxy.module.fight.service.core.Unit;
-import com.my9yu.common.protocol.annotation.Transable;
+import com.edu.game.jct.fight.service.alter.Alter;
+import com.edu.game.jct.fight.service.core.Unit;
+
 
 /**
  * 战斗单元的数值变更对象
  * @author Frank
  */
-@Transable
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class AlterValue {
 

@@ -60,6 +60,11 @@ public class DegreeAlter implements Alter<Double, Double> {
 	}
 
 	@Override
+	public Double toValue(Integer value) {
+		return (double)value / 10000L;
+	}
+	
+	@Override
 	public String toString(Double value) {
 		return value.toString();
 	}

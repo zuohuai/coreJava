@@ -53,4 +53,9 @@ public abstract class DoubleTemplate implements Alter<Double, Double> {
 	public Double multiply(Double value, double multiple) {
 		return value * multiple;
 	}
+	
+	@Override
+	public Double toValue(Integer value) {
+		return (double)value / 10000L;
+	}
 }

@@ -61,4 +61,11 @@ public interface Alter<T, E extends Number> {
 	 * @return
 	 */
 	E multiply(E value, double multiple);
+	
+	/**
+	 * 将整数表现转为对象形式
+	 * @param value
+	 * @return
+	 */
+	E toValue(Integer value);
 }

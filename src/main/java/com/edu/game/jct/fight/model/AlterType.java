@@ -4,25 +4,18 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.eyu.ahxy.module.fight.service.alter.Alter;
-import com.eyu.ahxy.module.fight.service.alter.DegreeAlter;
-import com.eyu.ahxy.module.fight.service.alter.LifeAlter;
-import com.eyu.ahxy.module.fight.service.alter.MpInitAlter;
-import com.eyu.ahxy.module.fight.service.alter.RateAlter;
-import com.eyu.ahxy.module.fight.service.alter.StateAlter;
-import com.eyu.ahxy.module.fight.service.alter.TalentLifeAlter;
-import com.eyu.ahxy.module.fight.service.alter.TalentRateAlter;
-import com.eyu.ahxy.module.fight.service.alter.TalentValueAlter;
-import com.eyu.ahxy.module.fight.service.alter.TempValueAlter;
-import com.eyu.ahxy.module.fight.service.alter.TitleLifeAlter;
-import com.eyu.ahxy.module.fight.service.alter.TitleRateAlter;
-import com.eyu.ahxy.module.fight.service.alter.TitleValueAlter;
-import com.eyu.ahxy.module.fight.service.alter.UnitValueAlter;
-import com.my9yu.common.protocol.annotation.Transable;
+import com.edu.game.jct.fight.service.alter.Alter;
+import com.edu.game.jct.fight.service.alter.DegreeAlter;
+import com.edu.game.jct.fight.service.alter.LifeAlter;
+import com.edu.game.jct.fight.service.alter.MpInitAlter;
+import com.edu.game.jct.fight.service.alter.RateAlter;
+import com.edu.game.jct.fight.service.alter.StateAlter;
+import com.edu.game.jct.fight.service.alter.TempValueAlter;
+import com.edu.game.jct.fight.service.alter.UnitValueAlter;
 
 /**
  * 值修改类型
- * @author Frank
+ * @author administrator
  */
 @SuppressWarnings("rawtypes")
 public enum AlterType {
@@ -57,8 +50,6 @@ public enum AlterType {
 	DEFENCE_P("DEFENCE_P", new TempValueAlter(), 1),
 	/** 防御:法术 */
 	DEFENCE_M("DEFENCE_M", new TempValueAlter(), 1),
-	/** 战力 */
-	FIGHTSCORE("FIGHTSCORE", new UnitValueAlter(UnitValue.FIGHTSCORE), 1),
 
 	// 比率属性(累加关系)
 
@@ -114,10 +105,10 @@ public enum AlterType {
 	/** 恢复率 */
 	DEGREE_HEALING("DEGREE:" + UnitDegree.HEALING, new DegreeAlter(UnitDegree.HEALING), 1),
 	/** 降恢复率 */
-	DEGREE_UNHEALING("DEGREE:" + UnitDegree.UNHEALING, new DegreeAlter(UnitDegree.UNHEALING), 1),
-
+	DEGREE_UNHEALING("DEGREE:" + UnitDegree.UNHEALING, new DegreeAlter(UnitDegree.UNHEALING), 1);
 
 	private static Map<String, AlterType> map = new HashMap<String, AlterType>(AlterType.values().length);
+
 	static {
 		for (AlterType type : AlterType.values()) {
 			map.put(type.getKey(), type);

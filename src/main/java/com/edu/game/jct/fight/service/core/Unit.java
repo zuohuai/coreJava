@@ -1,6 +1,5 @@
 package com.edu.game.jct.fight.service.core;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,10 +10,6 @@ import com.edu.game.jct.fight.model.UnitDegree;
 import com.edu.game.jct.fight.model.UnitRate;
 import com.edu.game.jct.fight.model.UnitState;
 import com.edu.game.jct.fight.model.UnitValue;
-import com.eyu.ahxy.module.fight.service.core.Context;
-import com.eyu.ahxy.module.fight.service.effect.buff.Buff;
-import com.eyu.ahxy.module.fight.service.effect.buff.BuffFactory;
-import com.eyu.ahxy.module.fight.service.effect.buff.BuffState;
 
 /**
  * 战斗单元 该对象用来表示战斗中的计算个体
@@ -40,13 +35,13 @@ public class Unit implements Cloneable {
 
 	/** 标识 */
 	private String id;
-	/**位置*/
+	/** 位置 */
 	private Position position;
 	/** 状态值 */
 	private int state = UnitState.NORMAL;
-	/**玩家对象*/
+	/** 玩家对象 */
 	private Player owner;
-	/**玩家身份标识*/
+	/** 玩家身份标识 */
 	private Long playerId;
 	/** 数值属性 */
 	private Map<UnitValue, Integer> values = new HashMap<>(UnitValue.values().length);
@@ -93,7 +88,7 @@ public class Unit implements Cloneable {
 		}
 		return current;
 	}
-	
+
 	/**
 	 * 获取基础属性
 	 * @param type
@@ -116,6 +111,19 @@ public class Unit implements Cloneable {
 	public void setValue(UnitValue type, int value) {
 		values.put(type, value);
 	}
+
+	/**
+	 * 增加/减少比率值(累加关系)
+	 * @param name 约定的键名
+	 * @param value 增量
+	 * @return 最新值
+	 */
+	public double increaseRate(UnitRate rate, double value) {
+		double current = getRate(rate);
+		current += value;
+		setRate(rate, current);
+		return current;
+	}
 	
 	/**
 	 * 获取比率属性(累加关系)
@@ -131,6 +139,15 @@ public class Unit implements Cloneable {
 	}
 
 	/**
+	 * 设置指定比率(累加关系)
+	 * @param rate 比率
+	 * @param value 值
+	 * @return
+	 */
+	public void setRate(UnitRate rate, double value) {
+		rates.put(rate, value);
+	}
+	/**
 	 * 获取比率属性(乘除关系)
 	 * @param type
 	 * @return
@@ -143,7 +160,6 @@ public class Unit implements Cloneable {
 		return result;
 	}
 
-	
 	/**
 	 * 增加/减少比率值(乘除关系)
 	 * @param name 约定的键名
@@ -162,7 +178,7 @@ public class Unit implements Cloneable {
 		setDegree(degree, current);
 		return current;
 	}
-	
+
 	/**
 	 * 获取指定比率(乘除关系)
 	 * @param type 类型
@@ -181,20 +197,52 @@ public class Unit implements Cloneable {
 	public void setDegree(UnitDegree degree, double value) {
 		degrees.put(degree, value);
 	}
-	
+
+	// 状态相关的逻辑方法 ...
+
+	/** 添加状态 */
+	public void addState(int status) {
+		state = state | status;
+	}
+
+	/** 移除状态 */
+	public void removeState(int status) {
+		if (hasState(status)) {
+			state = state ^ status;
+		}
+	}
+
+	/** 设置存活状态 */
+	public void live() {
+		removeState(UnitState.DEAD);
+	}
 	/** 检查是否有某种状态 */
 	public boolean hasState(int status) {
 		return (state & status) == status ? true : false;
 	}
+
 	
 	/** 设置死亡状态 */
 	public void dead() {
 		// 死亡直接设置死亡状态，没有任何其他效果
 		this.state = UnitState.DEAD;
-		
-		//清空所有的效果 TODO
+
+		// 清空所有的效果 TODO
 	}
-	
+
+	/**
+	 * 修改怒气值
+	 * @param value 值
+	 */
+	public void changeMp(int value) {
+		int limit = getValue(UnitValue.MP_INIT);
+		if (value > limit) {
+			setValue(UnitValue.MP, value);
+		} else {
+			setValue(UnitValue.MP, limit);
+		}
+	}
+
 	public String getId() {
 		return id;
 	}
@@ -210,5 +258,5 @@ public class Unit implements Cloneable {
 	public Long getPlayerId() {
 		return playerId;
 	}
-	
+
 }

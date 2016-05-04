@@ -40,6 +40,11 @@ public abstract class IntegerTemplate implements Alter<Integer, Integer> {
 	}
 	
 	@Override
+	public Integer toValue(Integer value) {
+		return value;
+	}
+	
+	@Override
 	public String toString(Integer value) {
 		return value.toString();
 	}

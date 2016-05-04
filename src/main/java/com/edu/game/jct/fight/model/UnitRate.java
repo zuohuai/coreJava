@@ -17,7 +17,7 @@ public enum UnitRate {
 	/**暴击*/
 	CRIT,
 	/**免暴*/
-	UN_CRIT,
+	UNCRIT,
 	/**暴击伤害*/
 	HURT_CRIT,
 	/**破击*/
@@ -41,7 +41,7 @@ public enum UnitRate {
 	/**混乱率*/
 	CHAOS,
 	/**抗混乱率*/
-	UN_CHAOS,
+	UNCHAOS,
 	/**迷糊率*/
 	FUZZY
 }

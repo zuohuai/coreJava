@@ -20,6 +20,19 @@
 	</properties>
 
 	<dependencies>
+		<!-- Excel操作  -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.7</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>3.7</version>
+			<type>jar</type>
+		</dependency>
 		<!-- akka测试 -->
 
 		<!-- curotor test -->
