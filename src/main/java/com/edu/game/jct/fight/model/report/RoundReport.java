@@ -1,4 +1,4 @@
-package com.eyu.ahxy.module.fight.model.report;
+package com.edu.game.jct.fight.model.report;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -6,21 +6,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.eyu.ahxy.module.cost.model.CostItemResult;
-import com.eyu.ahxy.module.fight.model.BattleResult;
-import com.eyu.ahxy.module.fight.model.BattleType;
-import com.eyu.ahxy.module.fight.model.FighterInfo;
-import com.eyu.ahxy.module.fight.model.UnitInfo;
-import com.eyu.ahxy.module.fight.service.core.Unit;
-import com.eyu.ahxy.module.player.manager.Player;
-import com.eyu.ahxy.module.reward.model.RewardResult;
-import com.my9yu.common.protocol.annotation.Transable;
+import com.edu.game.Player;
+import com.edu.game.jct.fight.model.BattleResult;
+import com.edu.game.jct.fight.model.FighterInfo;
+import com.edu.game.jct.fight.model.UnitInfo;
+import com.edu.game.jct.fight.service.config.BattleType;
+import com.edu.game.jct.fight.service.core.Unit;
 
 /**
  * 回合战报
  * @author Frank
  */
-@Transable
 public class RoundReport {
 
 	/** 第几回合 */
@@ -44,10 +40,6 @@ public class RoundReport {
 	// 玩法的附加信息部分
 	/** 战斗类型 */
 	private BattleType battleType;
-	/** 玩家对应的奖励(玩家标识:奖励内容) */
-	private Map<Long, List<RewardResult>> rewardResults;
-	/** 玩家对应的扣费(玩家标识:奖励内容) */
-	private Map<Long, List<CostItemResult>> costResults;
 	/** 附加信息(玩家标识:附加内容) */
 	private Map<Long, Object> additions;
 	/** 需要刷新的战斗单元 */
@@ -57,42 +49,6 @@ public class RoundReport {
 	private List<DebugInfo> debugs;
 
 	// 逻辑方法
-
-	/**
-	 * 添加玩家战斗后获得的奖励信息
-	 * @param player
-	 * @param rewards
-	 */
-	public void addRewards(Player player, List<RewardResult> rewards) {
-		if (rewardResults == null) {
-			rewardResults = new HashMap<Long, List<RewardResult>>(1);
-		}
-		Long playerId = player.getId();
-		if (rewardResults.containsKey(playerId)) {
-			List<RewardResult> current = rewardResults.get(playerId);
-			current.addAll(rewards);
-		} else {
-			rewardResults.put(playerId, rewards);
-		}
-	}
-
-	/**
-	 * 添加玩家战斗后扣减的扣减信息
-	 * @param player
-	 * @param costs
-	 */
-	public void addCosts(Player player, List<CostItemResult> costs) {
-		if (costResults == null) {
-			costResults = new HashMap<Long, List<CostItemResult>>();
-		}
-		Long playerId = player.getId();
-		if (costResults.containsKey(playerId)) {
-			List<CostItemResult> current = costResults.get(playerId);
-			current.addAll(costs);
-		} else {
-			costResults.put(playerId, costs);
-		}
-	}
 
 	/**
 	 * 添加玩家战斗后的附加信息
@@ -259,22 +215,6 @@ public class RoundReport {
 
 	public void setBattleType(BattleType battleType) {
 		this.battleType = battleType;
-	}
-
-	public Map<Long, List<RewardResult>> getRewardResults() {
-		return rewardResults;
-	}
-
-	protected void setRewardResults(Map<Long, List<RewardResult>> rewardResults) {
-		this.rewardResults = rewardResults;
-	}
-
-	public Map<Long, List<CostItemResult>> getCostResults() {
-		return costResults;
-	}
-
-	protected void setCostResults(Map<Long, List<CostItemResult>> costResults) {
-		this.costResults = costResults;
 	}
 
 	public Map<Long, Object> getAdditions() {

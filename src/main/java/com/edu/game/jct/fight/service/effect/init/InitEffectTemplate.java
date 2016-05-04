@@ -1,15 +1,15 @@
-package com.eyu.ahxy.module.fight.service.effect.init;
+package com.edu.game.jct.fight.service.effect.init;
 
 import java.util.List;
 
-import com.eyu.ahxy.module.fight.service.core.Fighter;
-import com.eyu.ahxy.module.fight.service.core.Unit;
-import com.eyu.ahxy.module.fight.service.effect.select.SelectHelper;
-import com.eyu.ahxy.module.fight.service.effect.select.SelectType;
+import com.edu.game.jct.fight.service.core.Fighter;
+import com.edu.game.jct.fight.service.core.Unit;
+import com.edu.game.jct.fight.service.effect.select.SelectHelper;
+import com.edu.game.jct.fight.service.effect.select.SelectType;
 
 /**
  * 初始化技能效果模版
- * @author Frank
+ * @author administrator
  */
 public abstract class InitEffectTemplate implements InitEffect {
 

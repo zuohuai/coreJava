@@ -1,12 +1,9 @@
-package com.eyu.ahxy.module.fight.model.report;
-
-import com.my9yu.common.protocol.annotation.Constant;
+package com.edu.game.jct.fight.model.report;
 
 /**
  * 初始化效果的施放状态
  * @author Frank
  */
-@Constant
 public interface InitState {
 
 	/** 正常状态(0) */

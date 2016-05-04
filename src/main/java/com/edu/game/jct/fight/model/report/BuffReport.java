@@ -1,15 +1,12 @@
-package com.eyu.ahxy.module.fight.model.report;
+package com.edu.game.jct.fight.model.report;
 
-import com.eyu.ahxy.module.fight.model.AlterType;
-import com.eyu.ahxy.module.fight.model.AlterValue;
-import com.eyu.ahxy.module.fight.service.effect.buff.BuffState;
-import com.my9yu.common.protocol.annotation.Transable;
+import com.edu.game.jct.fight.model.AlterType;
+import com.edu.game.jct.fight.model.AlterValue;
 
 /**
  * BUFF 战报
  * @author Frank
  */
-@Transable
 public class BuffReport {
 
 	/** BUFF战报类型 */

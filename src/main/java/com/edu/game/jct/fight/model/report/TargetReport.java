@@ -1,20 +1,17 @@
-package com.eyu.ahxy.module.fight.model.report;
+package com.edu.game.jct.fight.model.report;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.eyu.ahxy.module.fight.model.AlterType;
-import com.eyu.ahxy.module.fight.model.AlterValue;
-import com.eyu.ahxy.module.fight.model.UnitInfo;
-import com.eyu.ahxy.module.fight.service.core.Unit;
-import com.eyu.ahxy.module.fight.service.effect.skill.SkillEffect;
-import com.my9yu.common.protocol.annotation.Transable;
+import com.edu.game.jct.fight.model.AlterType;
+import com.edu.game.jct.fight.model.AlterValue;
+import com.edu.game.jct.fight.model.UnitInfo;
+import com.edu.game.jct.fight.service.core.Unit;
 
 /**
  * 技能效果({@link SkillEffect})对于每个承受目标的战报
  * @author Frank
  */
-@Transable
 public class TargetReport {
 	
 	/** 承受目标标识 */

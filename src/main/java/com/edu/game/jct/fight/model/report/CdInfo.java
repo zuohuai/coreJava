@@ -1,17 +1,14 @@
-package com.eyu.ahxy.module.fight.model.report;
+package com.edu.game.jct.fight.model.report;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.eyu.ahxy.module.fight.service.effect.skill.SkillState;
-import com.my9yu.common.protocol.annotation.Transable;
 
 /**
  * 技能CD更新信息
  * @author Frank
  */
-@Transable
 public class CdInfo {
 
 	/** 战斗单元标识 */

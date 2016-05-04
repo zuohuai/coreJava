@@ -1,19 +1,17 @@
-package com.eyu.ahxy.module.fight.model.report;
+package com.edu.game.jct.fight.model.report;
 
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import com.eyu.ahxy.module.fight.model.UnitDegree;
-import com.eyu.ahxy.module.fight.model.UnitRate;
-import com.eyu.ahxy.module.fight.model.UnitValue;
-import com.my9yu.common.protocol.annotation.Transable;
+import com.edu.game.jct.fight.model.UnitDegree;
+import com.edu.game.jct.fight.model.UnitRate;
+import com.edu.game.jct.fight.model.UnitValue;
 
 /**
  * 调试用的战斗信息
  * @author Frank
  */
-@Transable
 public class DebugInfo {
 
 	/** 标识 */

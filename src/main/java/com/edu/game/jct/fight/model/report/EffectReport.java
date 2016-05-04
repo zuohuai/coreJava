@@ -1,16 +1,12 @@
-package com.eyu.ahxy.module.fight.model.report;
+package com.edu.game.jct.fight.model.report;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.eyu.ahxy.module.fight.service.effect.skill.EffectState;
-import com.my9yu.common.protocol.annotation.Transable;
 
 /**
  * 主动技能效果战报
  * @author Frank
  */
-@Transable
 public class EffectReport {
 
 	/** 效果标识 */

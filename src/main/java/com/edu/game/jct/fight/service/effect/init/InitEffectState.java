@@ -3,8 +3,8 @@ package com.edu.game.jct.fight.service.effect.init;
 import java.util.Comparator;
 import java.util.HashMap;
 
-import com.edu.game.JsonObject;
 import com.edu.game.jct.fight.service.effect.select.SelectType;
+import com.edu.game.resource.JsonObject;
 
 /**
  * 初始化技能状态

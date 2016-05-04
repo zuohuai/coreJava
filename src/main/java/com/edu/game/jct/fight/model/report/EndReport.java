@@ -1,12 +1,10 @@
-package com.eyu.ahxy.module.fight.model.report;
+package com.edu.game.jct.fight.model.report;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.eyu.ahxy.module.fight.service.core.Unit;
-import com.my9yu.common.protocol.annotation.Transable;
+import com.edu.game.jct.fight.service.core.Unit;
 
-@Transable
 public class EndReport {
 
 	/** 所有者标识 */

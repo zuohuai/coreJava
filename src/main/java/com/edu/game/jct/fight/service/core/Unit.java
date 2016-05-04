@@ -10,6 +10,8 @@ import com.edu.game.jct.fight.model.UnitDegree;
 import com.edu.game.jct.fight.model.UnitRate;
 import com.edu.game.jct.fight.model.UnitState;
 import com.edu.game.jct.fight.model.UnitValue;
+import com.edu.game.jct.fight.service.effect.buff.BuffState;
+import com.edu.game.jct.fight.service.effect.init.InitEffectState;
 
 /**
  * 战斗单元 该对象用来表示战斗中的计算个体
@@ -50,6 +52,15 @@ public class Unit implements Cloneable {
 	/** 比率属性() */
 	private Map<UnitDegree, Double> degrees = new HashMap<>(UnitDegree.values().length);
 
+	
+	/** 技能状态 */
+	private HashMap<String, SkillState> skillStates = new HashMap<String, SkillState>();
+	/** 被动效果状态 */
+	private HashMap<String, PassiveState> passiveStates = new HashMap<String, PassiveState>();
+	/** BUFF效果状态 */
+	private HashMap<String, BuffState> buffStates = new HashMap<String, BuffState>();
+	/** 初始化效果状态 */
+	private HashMap<String, InitEffectState> initStates = new HashMap<String, InitEffectState>();
 	/**
 	 * 增加/减少属性值(累加关系)
 	 * @param type 约定的键名
@@ -259,4 +270,21 @@ public class Unit implements Cloneable {
 		return playerId;
 	}
 
+	/** 获取技能状态 */
+	public Map<String, SkillState> getSkillStates() {
+		return skillStates;
+	}
+
+	/** 获取初始化效果状态 */
+	public Map<String, InitEffectState> getInitStates() {
+		return initStates;
+	}
+
+	public HashMap<String, PassiveState> getPassiveStates() {
+		return passiveStates;
+	}
+
+	public HashMap<String, BuffState> getBuffStates() {
+		return buffStates;
+	}
 }

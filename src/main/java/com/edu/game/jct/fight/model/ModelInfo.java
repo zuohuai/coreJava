@@ -1,6 +1,6 @@
 package com.edu.game.jct.fight.model;
 
-import com.edu.game.JsonObject;
+import com.edu.game.resource.JsonObject;
 
 /**
  * 战斗单位的模型信息

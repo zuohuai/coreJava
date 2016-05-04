@@ -1,12 +1,9 @@
-package com.eyu.ahxy.module.fight.model.report;
-
-import com.my9yu.common.protocol.annotation.Transable;
+package com.edu.game.jct.fight.model.report;
 
 /**
  * BUFF 变更类型
  * @author Frank
  */
-@Transable
 public enum BuffAlterType {
 
 	/** 添加 */

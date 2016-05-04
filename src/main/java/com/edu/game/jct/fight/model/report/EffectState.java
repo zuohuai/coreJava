@@ -1,12 +1,10 @@
-package com.eyu.ahxy.module.fight.model.report;
+package com.edu.game.jct.fight.model.report;
 
-import com.my9yu.common.protocol.annotation.Constant;
 
 /**
  * 技能效果的施放状态
  * @author Frank
  */
-@Constant
 public interface EffectState {
 
 	/** 正常状态(0) */
