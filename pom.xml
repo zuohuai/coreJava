@@ -20,6 +20,11 @@
 	</properties>
 
 	<dependencies>
+	<dependency>
+	<groupId>org.springframework.data</groupId>
+	<artifactId>spring-data-redis</artifactId>
+	<version>1.7.1.RELEASE</version>
+</dependency>
 		<!-- Excel操作  -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
@@ -232,15 +237,6 @@
 		</dependency>
 
 	</dependencies>
-
-	<!-- 定义多个仓库 -->
-	<repositories>
-		<repository>
-			<id>typesafe</id>
-			<name>Typesafe Repository</name>
-			<url>http://repo.typesafe.com/typesafe/releases/</url>
-		</repository>
-	</repositories>
 
 
 	<build>

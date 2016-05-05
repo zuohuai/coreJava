@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.edu.game.jct.fight.service.core.Unit;
+import com.edu.game.jct.fight.service.effect.init.InitEffectState;
 
 
 /**

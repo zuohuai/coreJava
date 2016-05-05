@@ -14,7 +14,7 @@ public enum Phase {
 	 * 行动:调整
 	 * 生成效果:被动技能(行动发起者)
 	 */
-	ACTION_AJUST,
+	ACTION_ADJUST,
 	
 	/**
 	 * 行动:防御

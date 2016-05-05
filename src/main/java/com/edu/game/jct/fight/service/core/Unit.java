@@ -1,17 +1,29 @@
 package com.edu.game.jct.fight.service.core;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import com.edu.game.Player;
+import com.edu.game.jct.fight.exception.FightException;
+import com.edu.game.jct.fight.exception.FightExceptionCode;
 import com.edu.game.jct.fight.model.Position;
 import com.edu.game.jct.fight.model.UnitDegree;
 import com.edu.game.jct.fight.model.UnitRate;
 import com.edu.game.jct.fight.model.UnitState;
 import com.edu.game.jct.fight.model.UnitValue;
+import com.edu.game.jct.fight.model.report.CdInfo;
 import com.edu.game.jct.fight.service.effect.buff.BuffState;
 import com.edu.game.jct.fight.service.effect.init.InitEffectState;
+import com.edu.game.jct.fight.service.effect.passive.PassiveState;
+import com.edu.game.jct.fight.service.effect.skill.SkillFactory;
+import com.edu.game.jct.fight.service.effect.skill.SkillState;
+import com.edu.utils.RandomUtils;
 
 /**
  * 战斗单元 该对象用来表示战斗中的计算个体
@@ -52,7 +64,6 @@ public class Unit implements Cloneable {
 	/** 比率属性() */
 	private Map<UnitDegree, Double> degrees = new HashMap<>(UnitDegree.values().length);
 
-	
 	/** 技能状态 */
 	private HashMap<String, SkillState> skillStates = new HashMap<String, SkillState>();
 	/** 被动效果状态 */
@@ -61,6 +72,38 @@ public class Unit implements Cloneable {
 	private HashMap<String, BuffState> buffStates = new HashMap<String, BuffState>();
 	/** 初始化效果状态 */
 	private HashMap<String, InitEffectState> initStates = new HashMap<String, InitEffectState>();
+
+	/** 选中的技能 */
+	private String choseSkill;
+
+	/** 选中技能 */
+	public void choseSkill(String skill) {
+		SkillState state = skillStates.get(skill);
+		if (state == null) {
+			throw new FightException(FightExceptionCode.SKILL_NOT_FOUND);
+		}
+		if (!state.isVaild(this, false)) {
+			throw new FightException(FightExceptionCode.SKILL_CANNOT_CHOSE);
+		}
+		choseSkill = skill;
+	}
+
+	/**
+	 * 获取战斗初始化效果，已经按照优先级排好序
+	 * @return
+	 */
+	public List<InitEffectState> getInitEffectState() {
+		List<InitEffectState> result = new ArrayList<InitEffectState>(initStates.size());
+		for (InitEffectState state : initStates.values()) {
+			result.add(state);
+		}
+		if (result.size() > 1) {
+			Collections.sort(result, InitEffectState.COMPARATOR_PRIORITY);
+		}
+		return result;
+
+	}
+
 	/**
 	 * 增加/减少属性值(累加关系)
 	 * @param type 约定的键名
@@ -135,7 +178,7 @@ public class Unit implements Cloneable {
 		setRate(rate, current);
 		return current;
 	}
-	
+
 	/**
 	 * 获取比率属性(累加关系)
 	 * @param type
@@ -158,6 +201,7 @@ public class Unit implements Cloneable {
 	public void setRate(UnitRate rate, double value) {
 		rates.put(rate, value);
 	}
+
 	/**
 	 * 获取比率属性(乘除关系)
 	 * @param type
@@ -227,18 +271,63 @@ public class Unit implements Cloneable {
 	public void live() {
 		removeState(UnitState.DEAD);
 	}
+
 	/** 检查是否有某种状态 */
 	public boolean hasState(int status) {
 		return (state & status) == status ? true : false;
 	}
 
-	
+	/** 检查是否死亡 */
+	public boolean isDead() {
+		return hasState(UnitState.DEAD);
+	}
+
 	/** 设置死亡状态 */
 	public void dead() {
 		// 死亡直接设置死亡状态，没有任何其他效果
 		this.state = UnitState.DEAD;
 
 		// 清空所有的效果 TODO
+	}
+
+	/**
+	 * 获取指定类型的BUFF
+	 * @param tag 类型标识(由策划自行管理)
+	 * @return
+	 */
+	public BuffState getBuffState(String tag) {
+		for (BuffState state : buffStates.values()) {
+			if (state.getTag().equals(tag)) {
+				return state;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * 检查是否有BUFF存在
+	 * @return true:有,false:没有
+	 */
+	public boolean hasBuff() {
+		return !buffStates.isEmpty();
+	}
+
+	/**
+	 * 获取指定阶段的被动效果(只返回有效的被动效果)
+	 * @param phase 阶段
+	 * @return 返回的被动效果集合已经按优先级别排好序，并不会返回null
+	 */
+	public List<PassiveState> getPassiveState(Phase phase) {
+		List<PassiveState> result = new ArrayList<PassiveState>(passiveStates.size());
+		for (PassiveState state : passiveStates.values()) {
+			if (state.getPhases().contains(phase)) {
+				result.add(state);
+			}
+		}
+		if (result.size() > 1) {
+			Collections.sort(result, PassiveState.COMPARATOR_PRIORITY);
+		}
+		return result;
 	}
 
 	/**
@@ -252,6 +341,87 @@ public class Unit implements Cloneable {
 		} else {
 			setValue(UnitValue.MP, limit);
 		}
+	}
+
+	/** 获取全部BUFF状态 */
+	@SuppressWarnings("unchecked")
+	public Collection<BuffState> getAllBuffStates() {
+		if (buffStates.isEmpty()) {
+			return Collections.EMPTY_LIST;
+		}
+
+		List<BuffState> result = new ArrayList<BuffState>(buffStates.values());
+		Collections.sort(result, BuffState.COMPARATOR_PRIORITY);
+
+		return result;
+	}
+
+	/**
+	 * 获取当前使用的技能
+	 * @param friend 友方
+	 * @param enemy 敌方
+	 * @return
+	 */
+	public SkillState getCurrentSkill(Fighter friend, Fighter enemy) {
+		SkillState result = null;
+		if (choseSkill != null) {
+			// 手动技能选择处理
+			result = skillStates.get(choseSkill);
+			choseSkill = null;
+		} else {
+			// 自动技能选择处理(技能选择AI)
+			SkillFactory factory = SkillFactory.getInstance();
+			List<SkillState> states = new ArrayList<SkillState>(skillStates.values());
+			Collections.sort(states, SkillState.COMPARATOR_PRIORITY);
+			Iterator<SkillState> it = states.iterator();
+			int priority = Integer.MIN_VALUE;
+			while (it.hasNext()) {
+				SkillState state = it.next();
+				if (state.getPriority() < priority) {
+					it.remove();
+					continue;
+				}
+				if (!state.isVaild(this, true)) {
+					// 不满足CD与MP要求的技能直接跳过
+					it.remove();
+					continue;
+				}
+				if (!factory.isAllow(state.getId(), this, friend, enemy)) {
+					// 再检查技能是否符合代码级别的施放要求
+					it.remove();
+					continue;
+				}
+				priority = state.getPriority();
+			}
+			result = states.get(RandomUtils.betweenInt(0, states.size() - 1, true));
+		}
+		return result;
+	}
+
+	/** 刷新全部技能CD */
+	public void refreshSkillCd() {
+		for (SkillState state : skillStates.values()) {
+			state.decreaseCd();
+		}
+	}
+
+	/** 获取技能的CD信息 */
+	public CdInfo getCdInfo() {
+		return CdInfo.valueOf(id, skillStates.values());
+	}
+
+	/**
+	 * 检查是否有指定阶段的被动效果
+	 * @param phase
+	 * @return
+	 */
+	public boolean hasPassive(Phase phase) {
+		for (PassiveState state : passiveStates.values()) {
+			if (state.getPhases().contains(phase)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public String getId() {
@@ -286,5 +456,10 @@ public class Unit implements Cloneable {
 
 	public HashMap<String, BuffState> getBuffStates() {
 		return buffStates;
+	}
+
+	/** 获取已经选择的技能标识 */
+	public String getChoseSkill() {
+		return choseSkill;
 	}
 }

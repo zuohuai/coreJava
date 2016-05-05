@@ -2,6 +2,7 @@ package com.edu.game.jct.fight.model.report;
 
 import com.edu.game.jct.fight.model.AlterType;
 import com.edu.game.jct.fight.model.AlterValue;
+import com.edu.game.jct.fight.service.effect.passive.PassiveState;
 
 /**
  * 被动效果战报

@@ -1,7 +1,9 @@
-package com.edu.game.jct.fight.service.config;
+package com.edu.game.jct.fight.service;
 
 import java.util.Date;
 
+import com.edu.game.jct.fight.service.config.BattleType;
+import com.edu.game.jct.fight.service.config.SpeedType;
 import com.edu.game.jct.fight.service.core.Fighter;
 
 /**

@@ -3,6 +3,8 @@ package com.edu.game.jct.fight.model.report;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.edu.game.jct.fight.service.effect.skill.EffectState;
+
 /**
  * 主动技能效果战报
  * @author Frank

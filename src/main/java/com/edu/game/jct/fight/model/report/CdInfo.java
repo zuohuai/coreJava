@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.edu.game.jct.fight.service.effect.skill.SkillState;
+
 
 /**
  * 技能CD更新信息

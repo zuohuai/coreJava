@@ -3,9 +3,11 @@ package com.edu.game.jct.fight.service.effect;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.edu.game.jct.fight.model.report.EffectState;
 import com.edu.game.jct.fight.service.core.Unit;
+import com.edu.game.jct.fight.service.effect.buff.BuffState;
 import com.edu.game.jct.fight.service.effect.init.InitEffectState;
+import com.edu.game.jct.fight.service.effect.passive.PassiveState;
+import com.edu.game.jct.fight.service.effect.skill.EffectState;
 
 
 /**

@@ -16,10 +16,14 @@ import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MessageFormatter;
 
 import com.edu.game.Player;
+import com.edu.game.Request;
 import com.edu.game.SessionManager;
+import com.edu.game.jct.fight.exception.FightException;
+import com.edu.game.jct.fight.exception.FightExceptionCode;
 import com.edu.game.jct.fight.model.BattleInfo;
 import com.edu.game.jct.fight.model.BattleResult;
 import com.edu.game.jct.fight.model.FighterInfo;
+import com.edu.game.jct.fight.model.ReturnVo;
 import com.edu.game.jct.fight.model.UnitInfo;
 import com.edu.game.jct.fight.model.UnitState;
 import com.edu.game.jct.fight.model.UnitValue;
@@ -27,15 +31,15 @@ import com.edu.game.jct.fight.model.report.BattleReport;
 import com.edu.game.jct.fight.model.report.InitReport;
 import com.edu.game.jct.fight.model.report.InitTargetReport;
 import com.edu.game.jct.fight.model.report.RoundReport;
-import com.edu.game.jct.fight.service.config.BattleConfig;
 import com.edu.game.jct.fight.service.config.BattleType;
 import com.edu.game.jct.fight.service.core.Context;
 import com.edu.game.jct.fight.service.core.Fighter;
 import com.edu.game.jct.fight.service.core.Unit;
 import com.edu.game.jct.fight.service.effect.init.InitEffect;
+import com.edu.game.jct.fight.service.effect.init.InitEffectFactory;
 import com.edu.game.jct.fight.service.effect.init.InitEffectState;
-import com.edu.netty.core.Request;
-
+import com.edu.game.lock.ChainLock;
+import com.edu.game.lock.LockUtils;
 
 /**
  * 战斗对象
@@ -155,7 +159,7 @@ public class Battle {
 		Map<Long, ReturnVo> rets = callback.onError(ex);
 		if (rets == null || rets.isEmpty()) {
 			// 没有返还信息的推送
-			Request<ReturnVo> request = Request.valueOf(FightPush.ERROR, null);
+			Request<ReturnVo> request = Request.valueOf(null);
 			List<Long> targets = new ArrayList<Long>(owners.size());
 			for (Player player : owners.keySet()) {
 				targets.add(player.getId());
@@ -165,7 +169,7 @@ public class Battle {
 			// 带有返还信息的推送
 			for (Player player : owners.keySet()) {
 				Long playerId = player.getId();
-				Request<ReturnVo> request = Request.valueOf(FightPush.ERROR, rets.get(playerId));
+				Request<ReturnVo> request = Request.valueOf(rets.get(playerId));
 				sessionManager.send(request, playerId);
 			}
 		}
@@ -204,7 +208,7 @@ public class Battle {
 		}
 		int end = 0;
 		Fighter fighter = isAttacker ? attacker : defender;
-		for (Unit[] us : fighter.getCurrent()) {
+		for (Unit[] us : fighter.getCurrents()) {
 			for (Unit u : us) {
 				if (u != null) {
 					end += u.getValue(UnitValue.HP);
@@ -308,7 +312,7 @@ public class Battle {
 	 * @return
 	 */
 	public Fighter getFriend(Unit unit) {
-		if (unit.getId().startsWith(Unit.ATTACKER_PREFIX)) {
+		if (unit.getId().startsWith(Unit.ATTACER_PREFIX)) {
 			return attacker;
 		} else {
 			return defender;
@@ -321,7 +325,7 @@ public class Battle {
 	 * @return
 	 */
 	public Fighter getEnemy(Unit unit) {
-		if (unit.getId().startsWith(Unit.ATTACKER_PREFIX)) {
+		if (unit.getId().startsWith(Unit.ATTACER_PREFIX)) {
 			return defender;
 		} else {
 			return attacker;
@@ -345,7 +349,7 @@ public class Battle {
 	 */
 	public List<Unit> getAllUnits() {
 		List<Unit> result = new ArrayList<Unit>();
-		for (Unit[] us : attacker.getCurrent()) {
+		for (Unit[] us : attacker.getCurrents()) {
 			for (Unit u : us) {
 				if (u == null)
 					continue;
@@ -353,7 +357,7 @@ public class Battle {
 					result.add(u);
 			}
 		}
-		for (Unit[] us : defender.getCurrent()) {
+		for (Unit[] us : defender.getCurrents()) {
 			for (Unit u : us) {
 				if (u == null)
 					continue;
@@ -411,16 +415,7 @@ public class Battle {
 		ChainLock lock = LockUtils.getLock(owners.keySet().toArray());
 		lock.lock();
 		try {
-			// 默认选择技能
-			if (config.getType() == BattleType.MULTIBATTLE) {
-				// 仅有队长可以选择技能
-				long leader = fighter.getAddition(FighterKeys.LEADER, 0l);
-				if (leader == player.getId()) {
-					fighter.choseMajorSkill(skill);
-				}
-			} else {
-				fighter.choseMajorSkill(player, skill);
-			}
+			fighter.choseMajorSkill(player, skill);
 		} finally {
 			lock.unlock();
 		}
@@ -454,14 +449,6 @@ public class Battle {
 	 * @param player
 	 */
 	public boolean canAuto(Player player) {
-		if (config.getType() == BattleType.MULTIBATTLE) {
-			Fighter fighter = owners.get(player);
-			long leader = fighter.getAddition(FighterKeys.LEADER, 0l);
-			if (leader == player.getId()) {
-				return true;
-			}
-			return false;
-		}
 		return true;
 	}
 
@@ -470,14 +457,8 @@ public class Battle {
 	 * @return
 	 */
 	public boolean isReady() {
-		if (config.getType() == BattleType.MULTIBATTLE) {
-			if (attacker.isCurrentReady() && defender.isCurrentReady()) {
-				return true;
-			}
-		} else {
-			if (attacker.isReady() && defender.isReady()) {
-				return true;
-			}
+		if (attacker.isReady() && defender.isReady()) {
+			return true;
 		}
 		return false;
 	}
@@ -517,7 +498,7 @@ public class Battle {
 		case ROUND:
 			report = next(null);
 			if (!owners.isEmpty()) {
-				Request<RoundReport> request = Request.valueOf(FightPush.ROUND, report);
+				Request<RoundReport> request = Request.valueOf(report);
 				Set<Long> targets = new HashSet<Long>(owners.size());
 				for (Player player : owners.keySet()) {
 					targets.add(player.getId());
@@ -535,7 +516,7 @@ public class Battle {
 				report = next(null);
 			}
 			if (isPush && !owners.isEmpty()) {
-				Request<RoundReport> request = Request.valueOf(FightPush.RESULT, report);
+				Request<RoundReport> request = Request.valueOf(report);
 				Set<Long> targets = new HashSet<Long>(owners.size());
 				for (Player player : owners.keySet()) {
 					targets.add(player.getId());
@@ -587,7 +568,7 @@ public class Battle {
 				// 战斗已经结束
 				end = callback.onBattleEnd(this, ret);
 				// 如果战斗没有结束，要重新补充执行ROUND_END阶段的扣除BUFF效果
-				if(!end) {					
+				if (!end) {
 					current.executeRoundEnd();
 				}
 			}
@@ -603,21 +584,6 @@ public class Battle {
 					end();
 				}
 			}
-			if (config.getType() == BattleType.MULTIBATTLE) {
-				// 推送多人战报信息
-				if (player != null && !owners.isEmpty()) {
-					long leader = attacker.getAddition(FighterKeys.LEADER, 0l);
-					Request<RoundReport> request = Request.valueOf(FightPush.ROUND, ret);
-					Set<Long> targets = new HashSet<Long>(owners.size());
-					for (Player member : owners.keySet()) {
-						if (member.getId() != leader) {
-							targets.add(member.getId());
-						}
-					}
-					sessionManager.send(request, targets.toArray());
-				}
-			}
-
 			return ret;
 		} finally {
 			if (lock != null) {

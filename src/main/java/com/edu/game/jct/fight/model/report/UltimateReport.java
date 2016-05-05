@@ -1,15 +1,12 @@
-package com.eyu.ahxy.module.fight.model.report;
+package com.edu.game.jct.fight.model.report;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.my9yu.common.protocol.annotation.Transable;
 
 /**
  * 回合技能的战报对象
  * @author Frank
  */
-@Transable
 public class UltimateReport {
 
 	/** 主动技能标识 */
