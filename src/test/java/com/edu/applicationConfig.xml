@@ -9,8 +9,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
 	<!-- 系统配置信息 -->
-	<bean class="com.edu.common.RedisConfig">
-		<property name="id" value="${codis.server.id}" />
+	<bean class="com.edu.codis.redis.RedisConfig">
 		<property name="address" value="${codis.server.address}" />
 		<property name="proxy" value="${codis.server.zk.proxy}" />
 		<property name="password" value="${codis.server.password}" />

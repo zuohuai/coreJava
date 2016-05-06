@@ -1,5 +1,6 @@
 package com.edu.codis;
 
+import java.io.Closeable;
 import java.io.IOException;
 
 import javax.annotation.PreDestroy;
@@ -11,7 +12,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
-import com.edu.common.RedisConfig;
+import com.edu.codis.redis.RedisConfig;
 import com.wandoulabs.jodis.JedisResourcePool;
 import com.wandoulabs.jodis.RoundRobinJedisPool;
 
@@ -56,6 +57,16 @@ public class JedisResourcePoolFactory implements
 		return jedisResourcePool;
 	}
 
+	public void close(Jedis jedis){
+		if(jedis != null){
+			try {
+				jedis.close();
+			} catch (Exception e) {
+				LOGGER.error("关闭redis连接出现异常", e);
+			}
+		}
+	}
+	
 	@PreDestroy
 	public void destroy() {
 		if (jedisResourcePool != null) {

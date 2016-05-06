@@ -16,17 +16,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import redis.clients.jedis.Jedis;
-
 import com.edu.codis.JedisResourcePoolFactory;
 import com.edu.codis.NedisResourcePoolFactory;
-import com.edu.common.RedisConfig;
-import com.edu.common.RedisConstant;
+import com.edu.codis.redis.RedisCallback;
+import com.edu.codis.redis.RedisConfig;
+import com.edu.codis.redis.RedisConstant;
+import com.edu.codis.redis.RedisHelper;
 import com.edu.jackson.JsonUtils;
 import com.edu.javaBean.Person;
 import com.edu.utils.RandomUtils;
 import com.wandoulabs.nedis.NedisClient;
 import com.wandoulabs.nedis.util.NedisUtils;
+
+import redis.clients.jedis.Jedis;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
@@ -62,13 +64,12 @@ public class CodisTest {
 		nedis.close().sync();
 	}
 
-	
 	/**
 	 * 环境搭建测试
 	 */
 	@Test
 	public void test_redis_config() {
-		assertThat(redisConfig.getId(), is(1));
+
 	}
 
 	/**
@@ -78,9 +79,9 @@ public class CodisTest {
 	@Test
 	public void test_codis_connect() throws Exception {
 		Jedis jedis = jedisFactory.getJedis();
-		String data =  jedis.get("town_rank:3161783124623363");
+		String data = jedis.get("town_rank:3161783124623363");
 		System.out.println(data);
-		
+
 	}
 
 	/**
@@ -137,20 +138,57 @@ public class CodisTest {
 		}
 	}
 
+	@Autowired
+	private RedisHelper redisHelper;
+
+	@Test
+	public void test_RedisHelper() throws Exception {
+		RedisCallback<Void> redisCallback = new RedisCallback<Void>() {
+			@Override
+			public Void doInRedis(Jedis jedis, Object... args) throws Exception {
+				String key = args[0].toString();
+				int start = Integer.parseInt(args[1].toString());
+				int end = Integer.parseInt(args[2].toString());
+				Set<String> result = jedis.zrevrange(key, start, end);
+				for (String value : result) {
+					System.out.println(value);
+				}
+				return null;
+			}
+		};
+		String key = "page_rank";
+		int start = 0;
+		int end = 100;
+		redisHelper.execute(redisCallback, new Object[] { key, start, end });
+		
+		//TODO
+		RedisCallback<String> redisCallback2 = new RedisCallback<String>() {
+			@Override
+			public String doInRedis(Jedis jedis, Object... args) throws Exception {
+				String key = args[0].toString();
+				String value = jedis.get(key);
+				return value;
+			}
+		};
+		String data = "town_rank:3161783124623363";
+		String value = redisHelper.execute(redisCallback2, new Object[] { data});
+		System.out.println("查询到的值是:"+value);
+	}
+
 	/**
 	 * 选择数据库的测试
 	 * @throws Exception
 	 */
 	@Test
-	public void test_select_db() throws Exception{
+	public void test_select_db() throws Exception {
 		Jedis jedis = jedisFactory.getJedis();
 		jedis.select(0);
-		for(int i = 0; i < 100 ; i++){
-			jedis.set("select_db_key"+i, "select_db_value"+i, RedisConstant.NX_NOT_EXIST, RedisConstant.EX_S, 60);
+		for (int i = 0; i < 100; i++) {
+			jedis.set("select_db_key" + i, "select_db_value" + i, RedisConstant.NX_NOT_EXIST, RedisConstant.EX_S, 60);
 		}
 		jedis.close();
 	}
-	
+
 	@After
 	public void destory() {
 		jedisFactory.destroy();

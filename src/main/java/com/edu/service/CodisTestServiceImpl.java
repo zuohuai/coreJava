@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import redis.clients.jedis.Jedis;
 
-import com.edu.common.RedisConfig;
+import com.edu.codis.redis.RedisConfig;
 import com.edu.manager.PlayerFighter;
 import com.edu.orm.Accessor;
 import com.edu.orm.Querier;

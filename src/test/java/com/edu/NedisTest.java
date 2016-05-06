@@ -9,7 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.edu.codis.NedisResourcePoolFactory;
-import com.edu.common.RedisConfig;
+import com.edu.codis.redis.RedisConfig;
 import com.wandoulabs.nedis.NedisClient;
 import com.wandoulabs.nedis.protocol.SetParams;
 import com.wandoulabs.nedis.util.NedisUtils;

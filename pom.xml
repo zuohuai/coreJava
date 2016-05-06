@@ -20,11 +20,12 @@
 	</properties>
 
 	<dependencies>
-	<dependency>
-	<groupId>org.springframework.data</groupId>
-	<artifactId>spring-data-redis</artifactId>
-	<version>1.7.1.RELEASE</version>
-</dependency>
+		<!-- ehcache -->
+		<dependency>
+		  <groupId>org.ehcache</groupId>
+		  <artifactId>ehcache</artifactId>
+		  <version>3.0.0</version>
+		</dependency>
 		<!-- Excel操作  -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>

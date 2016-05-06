@@ -20,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.edu.common.RedisConfig;
+import com.edu.codis.redis.RedisConfig;
 import com.edu.zookeeper.test.Business;
 
 @RunWith(SpringJUnit4ClassRunner.class)
