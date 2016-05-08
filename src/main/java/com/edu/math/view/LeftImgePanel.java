@@ -1,16 +1,15 @@
 package com.edu.math.view;
 
-import java.awt.Color;
-
 import javax.swing.JPanel;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.edu.mapEditor.MapEditorData;
+import com.edu.math.MapEditorData;
 
 /**
  * 左侧图片面板
+ * 
  * @author Administrator
  */
 @Component
@@ -20,9 +19,13 @@ public class LeftImgePanel extends JPanel {
 	@Autowired
 	private MapEditorData mapEditorData;
 
-	public LeftImgePanel() {
-		this.setLayout(null);
-		this.setBackground(Color.RED);
+	public LeftImgePanel(){
+		try {
+			this.setLayout(null);
+		} catch (Exception e) {
+
+		}
+		
 	}
 
 }

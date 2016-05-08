@@ -16,8 +16,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
-import com.edu.mapEditor.MapEditorData;
-import com.edu.mapEditor.listener.JImageListener;
+import com.edu.math.MapEditorData;
 
 /**
  * 图片读取组建 使用了JImageComponent的开发者应该记得在修改或者编辑了图像之后调用repaint()方法.
@@ -33,8 +32,6 @@ public class JImageComponent extends JComponent implements ApplicationListener<C
 	private BufferedImage bufferedImage = null;
 
 	private Graphics imageGraphics = null;
-	@Autowired
-	private JImageListener jImageListener;
 	@Autowired
 	private MapEditorData mapEditorData;
 
@@ -63,7 +60,6 @@ public class JImageComponent extends JComponent implements ApplicationListener<C
 		}
 
 		// 设置绘制状态
-		mapEditorData.modifyDrawLine(false);
 		this.mapEditorData.modiyfImgSize(this.bufferedImage.getWidth(), this.bufferedImage.getHeight());
 	}
 
@@ -83,11 +79,7 @@ public class JImageComponent extends JComponent implements ApplicationListener<C
 	public void loadImage(File imageLocation) throws IOException {
 		this.bufferedImage = ImageIO.read(imageLocation);
 		this.setBufferedImage(this.bufferedImage);
-
-		// 设置文件的路径
-		this.mapEditorData.modifyImgPath(imageLocation.getAbsolutePath());
-		this.mapEditorData.modifyImgName(imageLocation.getName());
-		//this.repaint();
+		// this.repaint();
 	}
 
 	/*
@@ -290,9 +282,6 @@ public class JImageComponent extends JComponent implements ApplicationListener<C
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
-		// 增加标签的事件处理
-		this.addMouseListener(jImageListener);
-		this.addMouseMotionListener(jImageListener);
 
 	}
 
