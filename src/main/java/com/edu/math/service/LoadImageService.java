@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.edu.math.MapEditorData;
-import com.edu.math.RatioProbability;
+import com.edu.math.RatioProbability2;
 import com.edu.math.listener.JButtonFocusAnalysisListener;
 import com.edu.math.view.JImageComponent;
 import com.edu.math.view.LeftImgePanel;
@@ -115,9 +115,10 @@ public class LoadImageService {
 		Map<Integer, Integer> resultTimes = mapEditorData.getValues();
 		Map<Integer, Integer> times = mapEditorData.getTimes();
 		int total = mapEditorData.getTotal();
+		RatioProbability2<Integer> ratioProbability = RatioProbability2.valueOf(mapEditorData.getSrc());
 		for (int i = 1; i <= total; i++) {
 			// 计算出现的次数
-			Integer result = RatioProbability.valueOf(mapEditorData.getSrc()).getResult();
+			Integer result = ratioProbability.getResult();
 			Integer value = resultTimes.get(result);
 			if (value == null) {
 				value = 0;
@@ -126,6 +127,23 @@ public class LoadImageService {
 			resultTimes.put(result, value);
 			times.put(i, result);
 		}
+		
+		
+		/*try {
+			String data = FileUtils.readFileToString(new File("E:\\workspace_study\\coreJava\\file\\result.txt"));
+			data = data.substring(1, data.length()-1);
+			Map<Integer, Integer> dataMap = new HashMap<>();
+			String[] arr = data.split(",");
+			for(String tmp : arr){
+				String[] tmpArr = tmp.split(":");
+				dataMap.put(Integer.parseInt(tmpArr[0].trim()), Integer.parseInt(tmpArr[1].trim()));
+			}
+			times.clear();
+			times.putAll(dataMap);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}*/
+		
 		List<Integer> keys = new LinkedList<>(resultTimes.keySet());
 		Collections.sort(keys);
 		for (Integer key : keys) {

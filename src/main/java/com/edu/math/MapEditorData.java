@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 
 /**
  * 图形编辑器数据存储
- * 
  * @author zuohuai
  */
 @Component
@@ -40,9 +39,10 @@ public class MapEditorData {
 	private int focus = -1;
 	/** 关注点的Btn的名称 */
 	public static final String FOCUS_BTN = "FOCUS_BTN";
-	/**已经构建的Button 名称*/
+	/** 已经构建的Button 名称 */
 	public static final Set<String> BTN_NAMES = new HashSet<>();
 
+	private int stardY = -1;
 	/** 整体的概率分布图 */
 	private String percentImg = "percent.png";
 	/** 关注点分布图 */
@@ -50,24 +50,30 @@ public class MapEditorData {
 
 	{
 		// 來源数据促使的初始化 5%
-		src.put(1, 5);
-		src.put(2, 95);
+		src.put(1, 1);
+		src.put(0, 19);
 		/** 我们这里只是关注物品ID为1的次数分布图 */
 		focus = 1;
+
+		stardY = 20;
 
 		String path = System.getProperty("user.dir") + File.separator + "file" + File.separator;
 		percentImg = path + percentImg;
 		focusImg = path + focusImg;
 	}
 
-	public boolean containName(String name){
+	public int getStardY() {
+		return stardY;
+	}
+
+	public boolean containName(String name) {
 		return BTN_NAMES.contains(name);
 	}
-	
-	public void addBtnName(String name){
+
+	public void addBtnName(String name) {
 		BTN_NAMES.add(name);
 	}
-	
+
 	public String getFocusBtnName() {
 		int weight = src.get(focus);
 		return "物品" + focus + "-" + weight + "分析";

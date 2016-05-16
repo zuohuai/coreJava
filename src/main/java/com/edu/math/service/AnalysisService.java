@@ -1,17 +1,20 @@
 package com.edu.math.service;
 
-import java.awt.Dimension;
-import java.awt.RenderingHints;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
 import java.io.File;
 import java.util.List;
 
-import org.jfree.chart.ChartPanel;
+import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.axis.ValueAxis;
-import org.jfree.chart.plot.FastScatterPlot;
-import org.omg.PortableServer.POA;
+import org.jfree.chart.annotations.XYBoxAnnotation;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.title.LegendTitle;
+import org.jfree.chart.title.TextTitle;
+import org.jfree.data.xy.DefaultXYDataset;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,9 +24,7 @@ import com.edu.math.view.LeftImgePanel;
 
 /**
  * 分析服务类
- * 
  * @author zuohuai
- *
  */
 @Component
 public class AnalysisService {
@@ -48,29 +49,41 @@ public class AnalysisService {
 		} catch (Exception exception) {
 			exception.printStackTrace();
 		}
-		System.out.println("分析生成的数据");
 	}
 
 	private File draw() {
 		try {
-			final NumberAxis domainAxis = new NumberAxis("X");
-			domainAxis.setAutoRangeIncludesZero(false);
-			final NumberAxis rangeAxis = new NumberAxis("Y");
-			rangeAxis.setAutoRangeIncludesZero(false);
+			// 构建xydataSet
+			double[][] data = build();
+			DefaultXYDataset xydataset = new DefaultXYDataset();
+			xydataset.addSeries(mapEditorData.getFocusBtnName(), data);
 
-			float[][] data = build();
-			final FastScatterPlot plot = new FastScatterPlot(data, domainAxis, rangeAxis);
-			final JFreeChart chart = new JFreeChart(mapEditorData.getFocusBtnName(), plot);
-			chart.getRenderingHints().put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-			final ChartPanel panel = new ChartPanel(chart, true);
-			panel.setMinimumDrawHeight(50);
-			panel.setMinimumSize(new Dimension(50,50));
-			panel.setMaximumDrawHeight(leftImgePanel.getWidth());
-			panel.setMinimumDrawWidth(100);
-			panel.setMaximumDrawWidth(leftImgePanel.getHeight());
+			
+			// 构建jfreechart
+			JFreeChart jfreechart = ChartFactory.createScatterPlot(mapEditorData.getFocusBtnName(), "times", "gap", xydataset,
+					PlotOrientation.VERTICAL, true, false, false);
+			
+			Font titleFont = new Font("黑体", Font.BOLD, 20);  
+			TextTitle textTitle = jfreechart.getTitle();  
+			textTitle.setFont(titleFont);// 为标题设置上字体  
+			
+			Font LegendFont = new Font("楷体", Font.PLAIN, 18);  
+			LegendTitle legend = jfreechart.getLegend(0);  
+			legend.setItemFont(LegendFont);// 为图例说明设置字体 
+			
+			jfreechart.setBackgroundPaint(Color.white);
+			jfreechart.setBorderPaint(Color.GREEN);
+			jfreechart.setBorderStroke(new BasicStroke(1.5f));
+			XYPlot xyplot = (XYPlot) jfreechart.getPlot();
+			
+			//构建边线
+	        XYBoxAnnotation box = new XYBoxAnnotation(0, 0, leftImgePanel.getWidth(), mapEditorData.getStardY()); //正常血压所在区域内边界  	    
+	        xyplot.addAnnotation(box);    ;  
+
 			File focusImgFile = new File(mapEditorData.getFocusImg());
-			ChartUtilities.saveChartAsJPEG(focusImgFile, chart, leftImgePanel.getWidth(), leftImgePanel.getHeight());
+			ChartUtilities.saveChartAsJPEG(focusImgFile, jfreechart, leftImgePanel.getWidth(),
+					leftImgePanel.getHeight());
 			return focusImgFile;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -78,10 +91,10 @@ public class AnalysisService {
 		return null;
 	}
 
-	private float[][] build() {
+	private double[][] build() {
 		List<Integer> data = mapEditorData.getTimeByFocus();
 		int size = data.size();
-		float[][] result = new float[2][size];
+		double[][] result = new double[2][size];
 		for (int i = 0; i < size; i++) {
 			result[0][i] = i;
 			if (i == 0) {

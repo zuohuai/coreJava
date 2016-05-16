@@ -32,6 +32,8 @@ public class RigthOperatorPanel extends JPanel implements ApplicationListener<Co
 	private JBtnOpenFileListener jBtnOpenFileListener;
 	
 	private JButton btnOpen = new JButton("生成报表");
+	
+	private JButton btnTest = new JButton("");
 
 	public RigthOperatorPanel() {
 

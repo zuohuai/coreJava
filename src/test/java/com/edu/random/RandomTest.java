@@ -17,6 +17,26 @@ public class RandomTest {
 		current = DateUtils.addMinutes(current, 1);
 		RandomUtils.isHit(random, 100, 0.1);
 	}
+	
+	@Test
+	public void test_random2() throws Exception{
+		System.out.println("测试随机种子相同,随机数是否相同");
+		Date current = new Date();
+		Random random = new Random(current.getTime());
+		System.out.println("random:"+random.nextInt(10));
+		
+		Random random2 = new Random(current.getTime());
+		System.out.println("random2:"+random2.nextInt(10));
+	}
+	
+	/**
+	 * 正态分布的两个参数:
+	 * 位置参数为μ、尺度参数为σ。根据正态分布，两个标准差之内的比率合起来为95%；三个标准差之内的比率合起来为99%。
+	 */
+	@Test
+	public void test_random3(){
+		
+	}
 }
 
 class RandomUtils {
