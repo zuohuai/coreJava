@@ -68,7 +68,7 @@ public class ZookeeperTest {
 	private static final String PATH1 = "/example/ephemeralNode";
 	private static final String PATH2 = "/example/node";
 	// 定义远程连接地址
-	private static final String server = ",192.168.60.81:2181";
+	private static final String server = "192.168.60.81:2181";
 	
 	/**
 	 * 临时节点测试

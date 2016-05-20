@@ -1,0 +1,14 @@
+package com.edu;
+
+import "SexPro.proto";
+
+//定义java包名
+option java_package = "com.edu.protocolBuff.vo";
+//定义java类名
+option java_outer_classname = "UserVo";
+message UserVo {
+	required string name = 1;
+	optional Sex sex = 2;
+	required int32 age = 3;
+}
+

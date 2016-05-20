@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 反射工具类
- * 
  * @see {@link ReflectionUtils}
  * @author frank
  */
@@ -28,10 +27,9 @@ public abstract class ReflectionUtils extends org.springframework.util.Reflectio
 
 	/**
 	 * 查找唯一被指定注释声明的域
-	 * 
 	 * @param ownerClz 被查找的类
 	 * @param fieldName 指定的注释
-	 * @throws NoSuchFieldException 
+	 * @throws NoSuchFieldException
 	 */
 	public static Field getDeclareField(Class<?> ownerClz, String fieldName) throws NoSuchFieldException {
 		Class<?> clz = ownerClz;
@@ -43,8 +41,7 @@ public abstract class ReflectionUtils extends org.springframework.util.Reflectio
 		while (field == null) {
 			clz = clz.getSuperclass();
 			if (clz == null) {
-				throw new NoSuchFieldException(ownerClz + " field " + fieldName
-						+ " not exists!");
+				throw new NoSuchFieldException(ownerClz + " field " + fieldName + " not exists!");
 			}
 			try {
 				field = clz.getDeclaredField(fieldName);
@@ -53,10 +50,9 @@ public abstract class ReflectionUtils extends org.springframework.util.Reflectio
 		}
 		return field;
 	}
-	
+
 	/**
 	 * 查找唯一被指定注释声明的域
-	 * 
 	 * @param <A> 注释类型
 	 * @param clz 被查找的类
 	 * @param type 指定的注释
@@ -87,7 +83,6 @@ public abstract class ReflectionUtils extends org.springframework.util.Reflectio
 	/**
 	 * 类似 {@link org.springframework.util.ReflectionUtils#doWithFields(Class, FieldCallback, FieldFilter)}
 	 * 的方法，只是该方法不会递归检查父类上的域
-	 * 
 	 * @see org.springframework.util.ReflectionUtils#doWithFields(Class, FieldCallback, FieldFilter)
 	 * @param clazz
 	 * @param fc
@@ -114,7 +109,6 @@ public abstract class ReflectionUtils extends org.springframework.util.Reflectio
 
 	/**
 	 * 获得第一个使用指定注释声明的属性
-	 * 
 	 * @param clz 属性所在类
 	 * @param annotationClass 注释类型
 	 * @return 不存在则返回 null
@@ -130,7 +124,6 @@ public abstract class ReflectionUtils extends org.springframework.util.Reflectio
 
 	/**
 	 * 获得全部使用指定注释声明的属性
-	 * 
 	 * @param clz 属性所在类
 	 * @param annotationClass 注释类型
 	 * @return 不会返回 null
@@ -146,8 +139,21 @@ public abstract class ReflectionUtils extends org.springframework.util.Reflectio
 	}
 
 	/**
+	 * 获得全部使用指定注释声明的属性
+	 * @param clz 属性所在类
+	 * @param annotationClass 注释类型
+	 * @return 不会返回 null
+	 */
+	public static List<Field> getAllField(Class<?> clz) {
+		List<Field> fields = new ArrayList<Field>();
+		for (Field field : clz.getDeclaredFields()) {
+			fields.add(field);
+		}
+		return fields;
+	}
+
+	/**
 	 * 获得第一个使用指定注释声明的方法
-	 * 
 	 * @param clz 属性所在类
 	 * @param annotationClass 注释类型
 	 * @return 不存在则返回 null
@@ -163,7 +169,6 @@ public abstract class ReflectionUtils extends org.springframework.util.Reflectio
 
 	/**
 	 * 获得全部使用指定注释声明的方法
-	 * 
 	 * @param clz 属性所在类
 	 * @param annotationClass 注释类型
 	 * @return 不会返回 null
@@ -180,7 +185,6 @@ public abstract class ReflectionUtils extends org.springframework.util.Reflectio
 
 	/**
 	 * 获得全部使用指定注释声明的 get 方法
-	 * 
 	 * @param clz 属性所在类
 	 * @param annotationClass 注释类型
 	 * @return 不会返回 null
@@ -204,7 +208,6 @@ public abstract class ReflectionUtils extends org.springframework.util.Reflectio
 
 	/**
 	 * 获取类属性PropertyDescriptor定义
-	 * 
 	 * @param beanClass 类
 	 * @return {@link PropertyDescriptor}[]
 	 */
