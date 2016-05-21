@@ -18,14 +18,16 @@ import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Descriptors.FileDescriptor;
 import com.google.protobuf.DynamicMessage;
 import com.google.protobuf.DynamicMessage.Builder;
+
+import scala.util.parsing.combinator.testing.Str;
+
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
 
 public class ProtoParserOrBuilder {
 	private Map<String, Descriptor> descriptors = null;
 	private static final String TEMP_DIR = "D://";
-	public static final String PROTOC_PATH = System.getProperty("user.dir") 
-			+ File.separator + "protoc" + File.separator
+	public static final String PROTOC_PATH = System.getProperty("user.dir") + File.separator + "protoc" + File.separator
 			+ "protoc.exe";
 	private File descFile;
 
@@ -51,9 +53,19 @@ public class ProtoParserOrBuilder {
 
 			FileDescriptorSet descriptorSet = FileDescriptorSet.parseFrom(fin);
 
-			for (FileDescriptorProto fdp : descriptorSet.getFileList()) {
+			// 构建依赖 测试
+			String path = proto.getParentFile().getAbsolutePath() +File.separator+ "SexPro.proto";
+			FileInputStream dependcyFile = new FileInputStream(createDescripFile(new File(path)));
+			FileDescriptorSet dependcySet = FileDescriptorSet.parseFrom(dependcyFile);
+			FileDescriptor dtr = null;
+			for (FileDescriptorProto fdp : dependcySet.getFileList()) {
 				FileDescriptor fd = FileDescriptor.buildFrom(fdp, new FileDescriptor[] {});
+				dtr = fd;
+				break;
+			}
 
+			for (FileDescriptorProto fdp : descriptorSet.getFileList()) {
+				FileDescriptor fd = FileDescriptor.buildFrom(fdp, new FileDescriptor[] {dtr});
 				for (Descriptor descriptor : fd.getMessageTypes()) {
 					String className = descriptor.getName();
 

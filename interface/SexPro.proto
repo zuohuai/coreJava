@@ -1,11 +1,8 @@
 package com.edu;
 
-//定义java包名
 option java_package = "com.edu.protocolBuff.vo";
-//定义java类名
 option java_outer_classname = "Sex";
-//定义性别
-enum Sex {
+enum SexPro {
 	MALE = 0;
 	FEMALE = 1;
 }

@@ -19,6 +19,7 @@ public class MessageDecoder extends LengthFieldBasedFrameDecoder {
 	}
 
 	/**
+	 * TODO 采用protocol 编码来解码
 	 * 解码成对象
 	 */
 	@Override
@@ -33,10 +34,11 @@ public class MessageDecoder extends LengthFieldBasedFrameDecoder {
 		
 		ByteBuf frame = (ByteBuf)super.decode(ctx, in);
 		try{
-			
+			return null;
 		}catch(Exception e){
 			//解码错误，强制关闭连接
 			ctx.close();
 		}
+		return null;
 	}
 }
