@@ -21,9 +21,7 @@ import com.edu.mapEditor.view.JImageComponent;
 
 /**
  * 用来实现图片的拖拽
- * 
  * @author zuohuai
- *
  */
 @Component
 public class JImageListener extends MouseInputAdapter {
@@ -41,6 +39,7 @@ public class JImageListener extends MouseInputAdapter {
 	 */
 	public void mouseDragged(MouseEvent e) {
 		int modify = e.getModifiers();
+		
 		if (modify == InputEvent.BUTTON3_MASK) {
 			// 转换坐标系统
 			Point newPoint = SwingUtilities.convertPoint(component, e.getPoint(), component.getParent());
@@ -51,11 +50,11 @@ public class JImageListener extends MouseInputAdapter {
 			// 修改数据存储中的坐标位置
 			mapEditorData.modiyfImgPosition(component.getX(), component.getY());
 		} else if (modify == InputEvent.BUTTON1_MASK) {
-			//如果不需要绘图，则不处理
-			if(!mapEditorData.isEditorGird()){
-				return;
+			// 如果不需要绘图，则不处理
+			if (mapEditorData.isEditorGird()) {
+				drawPoint(e, null);
 			}
-			drawPoint(e);
+			
 		}
 
 	}
@@ -69,16 +68,25 @@ public class JImageListener extends MouseInputAdapter {
 			// 得到当前坐标点
 			point = SwingUtilities.convertPoint(component, e.getPoint(), component.getParent());
 		} else if (modify == InputEvent.BUTTON1_MASK) {
-			//如果不需要绘图，则不处理
-			if(!mapEditorData.isEditorGird()){
-				return;
+			// 如果不需要绘图，则不处理
+			if (mapEditorData.isEditorGird()) {
+				drawPoint(e, null);			}
+			if(mapEditorData.isCanStart()){
+				if(mapEditorData.getStart() == null){
+					drawPoint(e,Color.GREEN);
+				}
 			}
-			drawPoint(e);
+			if(mapEditorData.isCanEnd()){
+				if(mapEditorData.getEnd() == null){
+					drawPoint(e,Color.ORANGE);			
+				}
+			}
+			
 		}
 
 	}
 
-	private void drawPoint(MouseEvent e) {
+	private void drawPoint(MouseEvent e, Color color) {
 		int currentX = e.getX();
 		int currentY = e.getY();
 
@@ -93,8 +101,11 @@ public class JImageListener extends MouseInputAdapter {
 		System.out.println("after:" + afterX + "," + afterY);
 		Graphics g = this.component.getGraphics();
 		Color c = g.getColor();
-		
+
 		Graphics2D g2d = (Graphics2D) g;
+		if(color != null){
+			g.setColor(color);
+		}
 		// 设置透明度
 		Composite current = g2d.getComposite();
 		AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f);
@@ -102,16 +113,16 @@ public class JImageListener extends MouseInputAdapter {
 
 		g2d.fill3DRect(afterX, afterY, mapEditorData.getPrixel(), mapEditorData.getPrixel(), false);
 		g2d.draw3DRect(afterX, afterY, mapEditorData.getPrixel(), mapEditorData.getPrixel(), false);
-		//将颜色还原
+		// 将颜色还原
 		g.setColor(c);
 		g2d.setComposite(current);
-		
-		mapEditorData.modifyPoint(com.edu.mapEditor.model.Point.valueOf(afterX, afterY), State.UNBLOCK);
+
+		mapEditorData.modifyPoint(com.edu.mapEditor.model.Point.valueOf(afterX, afterY), State.BLOCK);
 		this.component.repaint();
 	}
 
 	public JImageComponent getComponent() {
 		return component;
 	}
-	
+
 }

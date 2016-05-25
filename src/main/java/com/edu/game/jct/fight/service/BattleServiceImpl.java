@@ -44,7 +44,7 @@ import com.edu.utils.DelayedElement;
 /**
  * 战斗服务<br/>
  * 战斗锁次序:synchronized(Battle) -> ChainLock(Player...) -> synchronized(LockObject)
- * @author frank
+ * @author administrator
  */
 @Service
 public class BattleServiceImpl implements BattleService, ApplicationContextAware, ApplicationListener<ContextClosedEvent> {

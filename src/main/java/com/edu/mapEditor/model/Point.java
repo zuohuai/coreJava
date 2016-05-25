@@ -6,11 +6,13 @@ import org.apache.commons.lang3.builder.CompareToBuilder;
  * 用来标识坐标的的类
  * @author Administrator
  */
-public class Point implements Comparable<Point>{
+public class Point implements Comparable<Point> {
 	/** x坐标 */
 	private int x;
 	/** y坐标 */
 	private int y;
+	/** 状态 */
+	private State state;
 
 	public static Point valueOf(int x, int y) {
 		Point point = new Point();
@@ -25,6 +27,14 @@ public class Point implements Comparable<Point>{
 
 	public int getY() {
 		return y;
+	}
+
+	public void mergeState(State state) {
+		this.state = state;
+	}
+
+	public State getState() {
+		return state;
 	}
 
 	@Override
@@ -54,8 +64,9 @@ public class Point implements Comparable<Point>{
 
 	@Override
 	public String toString() {
-		return this.x+","+this.y;
+		return this.x + "," + this.y;
 	}
+
 	@Override
 	public int compareTo(Point o) {
 		return new CompareToBuilder().append(this.x, o.getX()).append(this.y, o.getY()).toComparison();

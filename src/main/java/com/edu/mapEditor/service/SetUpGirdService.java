@@ -68,7 +68,7 @@ public class SetUpGirdService {
 			for(int j =1;j <timeY; j++){
 				Point point = Point.valueOf(startX, startY);
 				startX += mapeditorData.getPrixel();
-				mapeditorData.addPoint(point, State.BLOCK);
+				mapeditorData.addPoint(point, State.UNBLOCK);
 			}
 			startY += mapeditorData.getPrixel();
 			startX =0;

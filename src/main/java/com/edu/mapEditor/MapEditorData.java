@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
+import com.edu.mapEditor.core.Node;
 import com.edu.mapEditor.model.Point;
 import com.edu.mapEditor.model.State;
 
@@ -37,7 +38,33 @@ public class MapEditorData {
 	private boolean editorGird;
 	/** 存储每个像素点的状态 */
 	private Map<Point, State> points = new HashMap<Point, State>();
+	/** 开始节点 */
+	private Node start;
+	/**是否可以设置开始节点*/
+	private boolean canStart;
+	/** 结束节点 */
+	private Node end;
+	/**是否可以设置结束节点*/
+	private boolean canEnd;
 
+	public void changeCanStart(boolean canStart){
+		this.canStart = canStart;
+	}
+	
+	public void changeCanEnd(boolean canEnd){
+		this.canEnd = canEnd;
+	}
+	
+	public boolean isCanStart() {
+		return canStart;
+	}
+	
+	public boolean isCanEnd() {
+		return canEnd;
+	}
+	
+	
+	
 	/**
 	 * 修改节点的状态
 	 * @param point
@@ -49,6 +76,24 @@ public class MapEditorData {
 			return;
 		}
 		points.put(point, state);
+	}
+
+	/**
+	 * 修改开始节点
+	 * @param x
+	 * @param y
+	 */
+	public void changeStart(int x, int y) {
+		start = Node.valueOf(x, y);
+	}
+
+	/**
+	 * 修改结束节点
+	 * @param x
+	 * @param y
+	 */
+	public void changeEnd(int x, int y) {
+		end = Node.valueOf(x, y);
 	}
 
 	public int getPointsLength() {
@@ -123,6 +168,14 @@ public class MapEditorData {
 
 	public boolean isDrawLine() {
 		return drawLine;
+	}
+
+	public Node getStart() {
+		return start;
+	}
+
+	public Node getEnd() {
+		return end;
 	}
 
 	public int getImgX() {

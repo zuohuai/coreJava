@@ -19,14 +19,14 @@ import com.edu.mapEditor.listener.JBtnExitListener;
 import com.edu.mapEditor.listener.JBtnExportListener;
 import com.edu.mapEditor.listener.JBtnInputPixedListener;
 import com.edu.mapEditor.listener.JBtnOpenFileListener;
+import com.edu.mapEditor.listener.JBtnSetEndListener;
 import com.edu.mapEditor.listener.JBtnSetGirdListener;
+import com.edu.mapEditor.listener.JBtnSetStartListener;
 import com.edu.mapEditor.model.Ids;
 
 /**
  * 右侧面板
- * 
  * @author Administrator
- * 
  */
 @Component
 public class RigthOperatorPanel extends JPanel implements ApplicationListener<ContextRefreshedEvent> {
@@ -48,6 +48,10 @@ public class RigthOperatorPanel extends JPanel implements ApplicationListener<Co
 	private JBtnCancelLineListener cancelLineListener;
 	@Autowired
 	private JBtnExportListener exportListener;
+	@Autowired
+	private JBtnSetStartListener startListener;
+	@Autowired
+	private JBtnSetEndListener endListener;
 
 	private JButton btnOpen = new JButton("打开文件");
 	private JButton btnExportFile = new JButton("导出文件");
@@ -56,6 +60,8 @@ public class RigthOperatorPanel extends JPanel implements ApplicationListener<Co
 	private JButton btnCancelGird = new JButton("取消网格");
 	private JButton btnEditorGird = new JButton("编辑网格");
 	private JButton btnSetPixel = new JButton("设置像素");
+	private JButton btnSetStart = new JButton("设置起点");
+	private JButton btnSetEnd = new JButton("设置终点");
 
 	public RigthOperatorPanel() {
 
@@ -86,9 +92,11 @@ public class RigthOperatorPanel extends JPanel implements ApplicationListener<Co
 		this.addButton(Ids.BTN_EXPORT_FILE, btnExportFile, exportListener);
 		this.addButton(Ids.BTN_EXIT_FILE, btnExitSystem, exitListener);
 		this.addButton(Ids.BTN_SET_UP_GIRD, btnSetGird, setUpGirdListener);
-		this.addButton(Ids.BTN_CANCEL_GIRD, btnCancelGird,cancelLineListener);
+		this.addButton(Ids.BTN_CANCEL_GIRD, btnCancelGird, cancelLineListener);
 		this.addButton(Ids.BTN_EDITOR_GIRD, btnEditorGird, editorGirdListenr);
 		this.addButton(Ids.BTN_SET_PIXEL, btnSetPixel, inputPixedListener);
+		this.addButton(Ids.BTN_SET_START, btnSetStart, startListener);
+		this.addButton(Ids.BTN_SET_END, btnSetEnd, endListener);
 	}
 
 	public static long getSerialversionuid() {
@@ -142,6 +150,5 @@ public class RigthOperatorPanel extends JPanel implements ApplicationListener<Co
 	public JButton getBtnSetPixel() {
 		return btnSetPixel;
 	}
-	
-	
+
 }

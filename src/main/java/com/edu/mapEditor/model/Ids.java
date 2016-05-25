@@ -20,4 +20,8 @@ public interface Ids {
 	String BTN_EDITOR_GIRD = "BTN_EDITOR_GIRD";
 	/**按钮-设置像素*/
 	String BTN_SET_PIXEL="BTN_SET_PIXEL";
+	/**按钮-设置开始*/
+	String BTN_SET_START="BTN_SET_START";
+	/**按钮-设置结束*/
+	String BTN_SET_END="BTN_SET_END";
 }
