@@ -54,7 +54,7 @@ public class RigthOperatorPanel extends JPanel implements ApplicationListener<Co
 	private JBtnSetEndListener endListener;
 
 	private JButton btnOpen = new JButton("打开文件");
-	private JButton btnExportFile = new JButton("导出文件");
+	private JButton btnExportFile = new JButton("规划线路");
 	private JButton btnExitSystem = new JButton("退出系统");
 	private JButton btnSetGird = new JButton("设置网格");
 	private JButton btnCancelGird = new JButton("取消网格");

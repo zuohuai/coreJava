@@ -1,9 +1,11 @@
 eclipse.preferences.version=1
 encoding//src/main/java=utf-8
 encoding//src/main/java/com/edu/thread/CyclicBarrier/CyclicBarrierterTest.java=gbk
+encoding//src/main/java/com/edu/thread/Semaphore/SemaphoreABC.java=gbk
 encoding//src/main/java/com/edu/thread/annotation/MyAnnotation.java=UTF-8
 encoding//src/main/java/com/edu/thread/callableAndFuture/CallableAndFutureTest.java=UTF-8
 encoding//src/main/java/com/edu/thread/lock/ReentrantLock\u89E3\u6790.txt=gbk
+encoding//src/main/java/com/edu/thread/timmerTradition/note.txt=gbk
 encoding//src/main/resources=UTF-8
 encoding//src/main/resources/client_new.properties=UTF-8
 encoding//src/test/java=utf-8

@@ -73,7 +73,7 @@ public class JImageListener extends MouseInputAdapter {
 				drawPoint(e, null);			}
 			if(mapEditorData.isCanStart()){
 				if(mapEditorData.getStart() == null){
-					drawPoint(e,Color.GREEN);
+					drawPoint(e,Color.YELLOW);
 				}
 			}
 			if(mapEditorData.isCanEnd()){
@@ -98,7 +98,7 @@ public class JImageListener extends MouseInputAdapter {
 
 		int afterX = mapEditorData.getPrixel() * numX;
 		int afterY = mapEditorData.getPrixel() * numY;
-		System.out.println("after:" + afterX + "," + afterY);
+
 		Graphics g = this.component.getGraphics();
 		Color c = g.getColor();
 

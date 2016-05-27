@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.edu.jackson.JsonUtils;
 import com.edu.mapEditor.MapEditorData;
 import com.edu.mapEditor.model.Point;
 import com.edu.mapEditor.model.State;
@@ -35,7 +36,7 @@ public class SetUpGirdService {
 		Graphics g = component.getGraphics();
 		// 画竖线
 		int startX = 0;
-		int timeX = 1;
+		int timeX = 0;
 		while (true) {
 			if (startX >= component.getWidth()) {
 				break;
@@ -44,10 +45,16 @@ public class SetUpGirdService {
 			startX += mapeditorData.getPrixel();
 			timeX++;
 		}
-		System.out.println("timeX:" + timeX);
+		System.out.println("timeX:" + timeX + ", width:" + component.getWidth());
+		int div = component.getWidth() % mapeditorData.getPrixel();
+		int len = component.getWidth() / mapeditorData.getPrixel();
+		if(div > 0){
+			len = len + 1;
+		}
+		System.out.println("xlen:"+len);
 		// 画横线
 		int startY = 0;
-		int timeY = 1;
+		int timeY = 0;
 		while (true) {
 			if (startY >= component.getHeight()) {
 				break;
@@ -64,10 +71,11 @@ public class SetUpGirdService {
 		startX =0;
 		startY = 0;
 		mapeditorData.clearPoints();
-		for(int i=1; i< timeX;i++){
-			for(int j =1;j <timeY; j++){
+		for(int i=1; i<= timeX;i++){
+			for(int j =1;j <=timeY; j++){
 				Point point = Point.valueOf(startX, startY);
 				startX += mapeditorData.getPrixel();
+				System.out.println(JsonUtils.object2String(point));
 				mapeditorData.addPoint(point, State.UNBLOCK);
 			}
 			startY += mapeditorData.getPrixel();

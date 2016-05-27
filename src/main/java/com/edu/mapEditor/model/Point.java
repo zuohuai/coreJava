@@ -69,6 +69,6 @@ public class Point implements Comparable<Point> {
 
 	@Override
 	public int compareTo(Point o) {
-		return new CompareToBuilder().append(this.x, o.getX()).append(this.y, o.getY()).toComparison();
+		return new CompareToBuilder().append(this.y, o.getY()).append(this.x, o.getX()).toComparison();
 	}
 }
