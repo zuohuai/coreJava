@@ -16,7 +16,7 @@ import com.edu.mapEditor.MapEditorData;
 import com.edu.mapEditor.listener.JBtnCancelLineListener;
 import com.edu.mapEditor.listener.JBtnEditorGirdListener;
 import com.edu.mapEditor.listener.JBtnExitListener;
-import com.edu.mapEditor.listener.JBtnExportListener;
+import com.edu.mapEditor.listener.JBtnChooseLineListener;
 import com.edu.mapEditor.listener.JBtnInputPixedListener;
 import com.edu.mapEditor.listener.JBtnOpenFileListener;
 import com.edu.mapEditor.listener.JBtnSetEndListener;
@@ -47,7 +47,7 @@ public class RigthOperatorPanel extends JPanel implements ApplicationListener<Co
 	@Autowired
 	private JBtnCancelLineListener cancelLineListener;
 	@Autowired
-	private JBtnExportListener exportListener;
+	private JBtnChooseLineListener exportListener;
 	@Autowired
 	private JBtnSetStartListener startListener;
 	@Autowired

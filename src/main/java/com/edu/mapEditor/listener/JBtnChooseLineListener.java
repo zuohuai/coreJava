@@ -6,20 +6,20 @@ import java.awt.event.ActionListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.edu.mapEditor.service.ExportService;
+import com.edu.mapEditor.service.ChooseLineService;
 
 /**
  * 导出按钮监听器
  * @author Administrator
  */
 @Component
-public class JBtnExportListener implements ActionListener {
+public class JBtnChooseLineListener implements ActionListener {
 	@Autowired
-	private ExportService exportService;
+	private ChooseLineService chooseLineService;
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		exportService.export();
+		chooseLineService.choseLine();
 	}
 
 }

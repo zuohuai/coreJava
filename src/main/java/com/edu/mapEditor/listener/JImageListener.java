@@ -33,6 +33,15 @@ public class JImageListener extends MouseInputAdapter {
 	private JImageComponent component;
 	@Autowired
 	private MapEditorData mapEditorData;
+	
+	enum ImageDrawType{
+		/**编辑网格*/
+		EDIT,
+		/**设置起始点*/
+		START,
+		/**设置终点*/
+		END
+	}
 
 	/**
 	 * 当鼠标左键拖动时触发该事件。 记录下鼠标按下(开始拖动)的位置。
@@ -52,7 +61,7 @@ public class JImageListener extends MouseInputAdapter {
 		} else if (modify == InputEvent.BUTTON1_MASK) {
 			// 如果不需要绘图，则不处理
 			if (mapEditorData.isEditorGird()) {
-				drawPoint(e, null);
+				drawPoint(e, null, ImageDrawType.EDIT);
 			}
 			
 		}
@@ -70,15 +79,23 @@ public class JImageListener extends MouseInputAdapter {
 		} else if (modify == InputEvent.BUTTON1_MASK) {
 			// 如果不需要绘图，则不处理
 			if (mapEditorData.isEditorGird()) {
-				drawPoint(e, null);			}
+				drawPoint(e, null, ImageDrawType.EDIT);			}
 			if(mapEditorData.isCanStart()){
 				if(mapEditorData.getStart() == null){
-					drawPoint(e,Color.YELLOW);
+					drawPoint(e,Color.YELLOW, ImageDrawType.START);
+					//设置起始Node
+					int x = e.getY()/mapEditorData.getPrixel();
+					int y = e.getX()/mapEditorData.getPrixel();
+					mapEditorData.changeStart(x, y);
 				}
 			}
 			if(mapEditorData.isCanEnd()){
 				if(mapEditorData.getEnd() == null){
-					drawPoint(e,Color.ORANGE);			
+					drawPoint(e,Color.RED, ImageDrawType.END);
+					//设置终点Node
+					int x = e.getY()/mapEditorData.getPrixel();
+					int y = e.getX()/mapEditorData.getPrixel();
+					mapEditorData.changeEnd(x, y);
 				}
 			}
 			
@@ -86,7 +103,7 @@ public class JImageListener extends MouseInputAdapter {
 
 	}
 
-	private void drawPoint(MouseEvent e, Color color) {
+	private void drawPoint(MouseEvent e, Color color, ImageDrawType type) {
 		int currentX = e.getX();
 		int currentY = e.getY();
 
@@ -116,8 +133,9 @@ public class JImageListener extends MouseInputAdapter {
 		// 将颜色还原
 		g.setColor(c);
 		g2d.setComposite(current);
-
-		mapEditorData.modifyPoint(com.edu.mapEditor.model.Point.valueOf(afterX, afterY), State.BLOCK);
+		if(type == ImageDrawType.EDIT){
+			mapEditorData.modifyPoint(com.edu.mapEditor.model.Point.valueOf(afterX, afterY), State.BLOCK);
+		}
 		this.component.repaint();
 	}
 
