@@ -8,4 +8,6 @@ package com.edu.design.strategy;
 public class RoleAction {
 
 	private Role role;
+	
+	
 }
