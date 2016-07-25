@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:dynamicdb="http://www.corejava.com/common/dynamicdb"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+http://www.corejava.com/common/dynamicdb http://www.corejava.com/common/dynamicdb/dynamicdb-1.0.xsd 
+http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<!-- AOP拦截配置 -->
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+
+	<!-- 自动包扫描配置 -->
+	<context:component-scan base-package="com.edu.dynamicdb" />
+
+	<!-- 编写spring 配置文件的配置多数源映射关系 -->
+	<bean id="dataSource" class="com.edu.dynamicdb.proxy.DynamicDateSource">
+		<property name="targetDataSources">
+			<map key-type="java.lang.String">
+				<entry key="dataSource-1" value-ref="dataSource-1"></entry>
+				<entry key="dataSource-2" value-ref="dataSource-2"></entry>
+			</map>
+		</property>
+		<property name="defaultTargetDataSource" ref="dataSource-1">
+		</property>
+	</bean>
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 配置数据源 -->
+		<property name="dataSource" ref="dataSource" />
+		<!-- 自动扫描mapping.xml文件 -->
+		<property name="mapperLocations" value="classpath:com/edu/dynamicdb/dao/*.xml"></property>
+	</bean>
+
+	<!-- 这里的mapperInterface需要接口类型 -->
+	<bean id="userMapper" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.edu.dynamicdb.dao" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<!-- 事务控制 -->
+	<bean id="txManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- 开启事务控制的注解支持 -->
+	<tx:annotation-driven transaction-manager="txManager" />
+
+	<!-- 数据源配置 -->
+	<bean id="dataSource-1" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url"
+			value="jdbc:mysql://127.0.0.1/mybatis01?useUnicode=true&amp;characterEncoding=utf-8" />
+		<property name="username" value="root" />
+		<property name="password" value="root" />
+		<property name="validationQuery" value="select ''" />
+		<property name="timeBetweenEvictionRunsMillis" value="5000" />
+		<property name="numTestsPerEvictionRun" value="10" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testWhileIdle" value="false" />
+		<property name="initialSize" value="10" />
+		<property name="maxActive" value="50000" />
+		<property name="maxIdle" value="30" />
+		<property name="minIdle" value="5" />
+		<property name="maxWait" value="60000" />
+		<property name="minEvictableIdleTimeMillis" value="10000" />
+		<property name="removeAbandoned" value="true" />
+		<property name="removeAbandonedTimeout" value="60" />
+	</bean>
+
+	<!-- 数据源 -->
+	<bean id="dataSource-2" parent="dataSource-1">
+		<property name="url"
+			value="jdbc:mysql://127.0.0.1/test?useUnicode=true&amp;characterEncoding=utf-8" />
+		<property name="username" value="root" />
+		<property name="password" value="root" />
+	</bean>
+</beans>

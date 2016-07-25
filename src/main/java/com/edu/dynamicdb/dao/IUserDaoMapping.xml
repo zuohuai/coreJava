@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.edu.dynamicdb.dao.IUserDao">  
+    <sql id="columns">id, username, password
+    </sql>  
+  
+    <resultMap id="userResult" type="com.edu.dynamicdb.model.UserVo">  
+        <id property="userid" column="id" />  
+        <result property="username" column="username" />  
+        <result property="password" column="password" />   
+    </resultMap>  
+  
+    <!-- 根据传入的Id值，到数据库中查询记录 -->  
+    <select id="getById" parameterType="int" resultMap="userResult">  
+        SELECT  
+        <include refid="columns"></include>  
+        FROM t_user WHERE id = #{id}  
+    </select>  
+</mapper>  
