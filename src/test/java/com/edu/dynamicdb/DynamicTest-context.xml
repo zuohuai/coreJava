@@ -52,6 +52,21 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	<!-- 开启事务控制的注解支持 -->
 	<tx:annotation-driven transaction-manager="txManager" />
 
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="delete*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception" />
+			<tx:method name="insert*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception" />
+			<tx:method name="update*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception" />
+			<tx:method name="save*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception" />
+			<tx:method name="*" propagation="REQUIRED" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config>
+		<aop:pointcut id="pc" expression="execution(* com.edu.dynamicdb.service.*.*(..))" />
+		<aop:advisor pointcut-ref="pc" advice-ref="txAdvice" />
+	</aop:config>
+
 	<!-- 数据源配置 -->
 	<bean id="dataSource-1" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">

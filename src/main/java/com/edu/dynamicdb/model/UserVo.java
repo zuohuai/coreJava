@@ -8,6 +8,13 @@ public class UserVo {
 	/**密码*/
 	private String password;
 	
+	public static UserVo valueOf(int userid, String username, String password){
+		UserVo userVo = new UserVo();
+		userVo.userid = userid;
+		userVo.username = username;
+		userVo.password = password;
+		return userVo;
+	}
 	public int getUserid() {
 		return userid;
 	}
