@@ -3,7 +3,7 @@
 
 	<modelVersion>1.0.0</modelVersion>
 	<groupId>codisTest</groupId>
-	<artifactId>codisTest</artifactId>
+	<artifactId>coreJava</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>coreJava</name>
 	<description>coreJava learning</description>
