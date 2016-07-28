@@ -72,9 +72,9 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		destroy-method="close">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url"
-			value="jdbc:mysql://127.0.0.1/mybatis01?useUnicode=true&amp;characterEncoding=utf-8" />
+			value="jdbc:mysql://10.199.200.63/mybatis01?useUnicode=true&amp;characterEncoding=utf-8" />
 		<property name="username" value="root" />
-		<property name="password" value="root" />
+		<property name="password" value="" />
 		<property name="validationQuery" value="select ''" />
 		<property name="timeBetweenEvictionRunsMillis" value="5000" />
 		<property name="numTestsPerEvictionRun" value="10" />
@@ -93,8 +93,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	<!-- 数据源 -->
 	<bean id="dataSource-2" parent="dataSource-1">
 		<property name="url"
-			value="jdbc:mysql://127.0.0.1/test?useUnicode=true&amp;characterEncoding=utf-8" />
+			value="jdbc:mysql://10.199.200.63/test?useUnicode=true&amp;characterEncoding=utf-8" />
 		<property name="username" value="root" />
-		<property name="password" value="root" />
+		<property name="password" value="" />
 	</bean>
 </beans>

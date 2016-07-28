@@ -22,7 +22,24 @@
 		insert into t_user(id,username,password) values(#{userid}, #{username},#{password})
 	</insert>
 	
+	<!-- 根据ID删除 -->
 	<delete id="deleteById" parameterType="int">
 		delete from t_user where id = #{id}
+	</delete>
+	
+	<!-- 批量插入不采用 ExecutorType.BATCH-->
+	<insert id="insertUserByBatch"  parameterType="java.util.List">  
+	   insert into t_user(id,username,password) values   
+	    <foreach collection="list" item="item" index="index" separator="," >  
+	        (#{item.userid},#{item.username},#{item.password})  
+	    </foreach>  
+	</insert> 
+	
+	<!-- 批量删除性能测试 -->
+	<delete id="deleteUserByBatch" parameterType="java.util.List">
+		delete from t_user where id in
+		<foreach item="item" collection="list" open="(" separator="," close=")">
+			#{item.userid}
+		</foreach>
 	</delete>
 </mapper>  
