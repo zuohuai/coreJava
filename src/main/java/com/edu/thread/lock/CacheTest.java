@@ -8,17 +8,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 
-/**
- * ��ȡ ReentrantReadWriteLock  �е�api ����Ƶ� CachedData 
- * ��д������Ϊ������д����������������⣬������д�����⣬д����д�����⣬
- * ������jvm�Լ����Ƶģ���ֻҪ�Ϻ���Ӧ�������ɡ������Ĵ���ֻ�����ݣ�
- * ���Ժܶ���ͬʱ����������ͬʱд���Ǿ��϶����������Ĵ����޸����ݣ�
- * ֻ����һ������д���Ҳ���ͬʱ��ȡ���Ǿ���д����
- * ��֮������ʱ���϶�����д��ʱ����д����
- * ���ö�д�������һ�׻���ϵͳ
- * @author 
- *
- */
+
 public class CacheTest {
 	private Map<String,Object>  map = new HashMap<String,Object>();
 	private ReadWriteLock  rwl = new ReentrantReadWriteLock(); //��д��
@@ -51,7 +41,7 @@ public class CacheTest {
 				rwl.writeLock().lock();
 				try{
 						if(value == null){
-							value ="data"; //д������
+							value ="data"; 
 							rwl.writeLock().unlock();
 						}
 

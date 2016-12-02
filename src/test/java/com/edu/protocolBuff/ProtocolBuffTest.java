@@ -61,7 +61,8 @@ public class ProtocolBuffTest {
 	}
 
 	private String  buildJavaClass(){
-		String cmd = PROTOC_PATH 
+		String cmd = null;
+		return cmd;
 	}
 
 	private List<File> search(String dir, final List<File> result) {

@@ -1,22 +1,12 @@
 package com.edu.thread.traditionalComunication;
 
-/**
- * ʵ�����߳�����50�� ִ��50�Σ�
- * ���߳�����20�� ִ��20�Σ�֮���ڽ���ִ��
- * һ������ִ��
- * �����������ѧϰ�����ھۣ���������ķ�ʽ��װ��һ����
- *  synchronized������һ���Ƿ�����Ҫ���ʵ���Դ�ϵ� 
- * @author 
- *
- */
+
 public class TraditionanCommunication {
 
 	public static void main(String[] args)
 	{
 		final Bussiness bussiness = new Bussiness();
-		/*
-		 * ���߳�
-		 */
+	
 		new Thread(new Runnable(){
 			@Override
 			public void run(){
@@ -26,9 +16,6 @@ public class TraditionanCommunication {
 			}
 		}).start();
 		
-		/*
-		 * ���߳�
-		 */
 		for(int i=1;i<=50;i++){
 			bussiness.main(i);
 		}

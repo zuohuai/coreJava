@@ -10,9 +10,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 /**
- * �̳߳ء�Callable ��Future��CompleteService ��ʹ��
- * @author 
- *
+ * 
+ * ClassName: CallableAndFutureTest <br/>  
+ *  
+ * @author hison.zhang  
+ * @version   
+ * @since JDK 1.7
  */
 public class CallableAndFutureTest {
 	
@@ -29,15 +32,28 @@ public class CallableAndFutureTest {
 				return "hello";
 			}
 		});
-		System.out.println("׼���ý������");
+		Callable<Object> myTask = new Callable<Object>(){
+			@Override
+			public Object call(){
+				while (!Thread.interrupted()) {
+					//模拟一个执行时间超级长的代码
+					while(true){
+						System.out.println("Hello, I am on call");
+						Thread.yield();
+					}
+				}
+				System.out.println("++++被中断了++++");
+				return "被中断";
+			}
+		};
+		Future<Object> future2 = theadPool.submit(myTask);
 		try {
 			System.out.println(future.get());
-		} catch (InterruptedException e) {
+			future2.cancel(true);
+			System.out.println(future2.get());
+		} catch (Exception e) {
 			e.printStackTrace();
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		}
-		
+		} 
 		CompletionService<Object> completionServcie = new ExecutorCompletionService<Object>(theadPool);
 		for(int i=1;i<=10;i++){
 			final int j = i;
@@ -49,7 +65,7 @@ public class CallableAndFutureTest {
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					return "���񷵻صĽ���ǣ�"+j;
+					return "返回值是:"+j;
 				}
 			});
 		}

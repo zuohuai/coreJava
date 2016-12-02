@@ -2,11 +2,7 @@ package com.edu.thread.Semaphore;
 
 import java.util.concurrent.Semaphore;
 
-/**
- * ��ǰ���������ɱ����ͷ�
- * @author zuohuai
- *
- */
+
 public class SemaphoreABC {
 
 	public static void main(String[] args){

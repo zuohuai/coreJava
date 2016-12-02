@@ -3,15 +3,7 @@ package com.edu.thread.lock;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-/**
- * Lock�ȴ�ͳ�߳�ģ���е�synchronized��ʽ������������������е������ƣ�
- * ������ҲӦ����һ������
- * �����߳�ִ�еĴ���Ƭ��Ҫʵ��ͬ�������Ч�������Ǳ�����ͬһ��Lock����
- * ���ڴ�ͳ�̻߳���  ʹ��synchronized �ؼ���
- * Ҫ���л���Ч����ʱ�򣬱���ʹ��ͬһ��������
- * @author zuohuai
- *
- */
+
 public class LockTest {
 //	private static int a = 0; 
 	public static void main(String[] args){
@@ -19,7 +11,7 @@ public class LockTest {
 	}
 	
 	public void init(){
-		 final Outputer outputer = new Outputer(); //ΪʲôҪ����final
+		 final Outputer outputer = new Outputer(); 
 		//outputer.output1("");
 		new Thread(new Runnable(){
 			@Override
@@ -49,19 +41,9 @@ public class LockTest {
 			}
 		}).start();
 	}
-	/**
-	 * ���ڲ��� ���Ե����ⲿ�� ������ �Ǿ�̬��Ա
-	 * @author zuohuai
-	 *
-	 */
+
 	 static class Outputer {
-		/**
-		 * ��ʽһ
-		 * ������ϼ���synchronized 
-		 * �������synchronized �ͻ���֡�zhangzuohua
-		 * i�� �Ľ��
-		 * @param name
-		 */
+	
 		 private Lock lock = new ReentrantLock(); 
 		 // ��������synchronized�����Ʒ�� ��synchronized ���� ���ʵ����� �����Բ鿴  http://tenyears.iteye.com/blog/48750
 		private void output1(String name){
@@ -79,11 +61,7 @@ public class LockTest {
 			
 		}
 		
-		/**
-		 * ������
-		 * ����ǰ����synchronized ���ͷ���һ���Ի��⣬��Ϊ��ʹ�õĶ��� ͬһ������this ����
-		 * @param name
-		 */
+
 		synchronized private void output2(String name){
 			int length = name.length();
 				for(int i=0;i<length;i++){
@@ -91,12 +69,7 @@ public class LockTest {
 					System.out.println();
 			}
 		}
-		
-		/**
-		 * ������
-		 * ��̬����ǰ����synchronized ���ͷ���һ���Ի��⣬��Ϊ��ʹ�õĶ��� ͬһ������Outputer.class  �ֽ������
-		 * @param name
-		 */
+
 		 static synchronized private void output3(String name){
 			int length = name.length();
 				for(int i=0;i<length;i++){

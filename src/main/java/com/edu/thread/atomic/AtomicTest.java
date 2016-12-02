@@ -1,12 +1,12 @@
 package com.edu.thread.atomic;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicIntegerArray;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.Test;
 
-import scala.actors.threadpool.AtomicInteger;
 
 public class AtomicTest {
 

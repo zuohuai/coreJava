@@ -18,6 +18,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import com.edu.zookeeper.ZookeeperTest;
+
 /**
  * 自动锁定方法切面
  * 
@@ -29,8 +31,6 @@ import org.springframework.stereotype.Component;
 public class RemoteLockAspect {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(RemoteLockAspect.class);
-	// 定义远程连接地址
-	private static final String server = "192.168.60.56:2181,192.168.60.80:2181,192.168.60.81:2181";
 
 	/**
 	 * 定义一个方法拦截
@@ -56,11 +56,15 @@ public class RemoteLockAspect {
 		// 开始远程锁定
 		CuratorFramework client = null;
 		try {
-			client = CuratorFrameworkFactory.newClient(server, new ExponentialBackoffRetry(1000, 3));
+			client = CuratorFrameworkFactory.newClient(ZookeeperTest.SERVER, new ExponentialBackoffRetry(1000, 3));
 			client.start();
 			final ClientLock clientLock = new ClientLock(client, path, "Client:" + sign.getName());
 			return clientLock.doWork(pjp, 10, TimeUnit.SECONDS);
-		} finally {
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		} 
+		finally {
 			CloseableUtils.closeQuietly(client);
 		}
 	}
