@@ -1,17 +1,9 @@
 package com.edu.thread.traditonThread;
 
-/**
- * ��ͳ�����̵߳�2�ַ�ʽ
- * Thread ִ�з��� ����û�и���Thread����ʱ�����û�и���
- * @author 
- *
- */
+
 public class TraditionThreadTest {
 
 	public static void main(String[] args){
-		/**
-		 * Thread ������
-		 */
 		Thread t1 = new Thread(){
 			public void run(){
 				while(true){
@@ -27,9 +19,6 @@ public class TraditionThreadTest {
 		};
 		t1.start();
 		
-		/**
-		 *ʵ��Runnable�ӿ�
-		 */
 		Thread t2 = new Thread(new Runnable(){
 			@Override
 			public void run(){
@@ -46,10 +35,6 @@ public class TraditionThreadTest {
 		});
 		t2.start();
 		
-		/**
-		 * ���е���Thread�����е�run()����
-		 * ������Runnable�е�run()����
-		 */
 		new Thread(new Runnable(){
 			@Override
 			public void run() {
