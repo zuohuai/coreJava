@@ -1,12 +1,6 @@
 package com.edu.thread.synchronizedTraditionnal;
 
-/**
- * �̵߳�ԭ����
- * ���ڴ�ͳ�̻߳���  ʹ��synchronized �ؼ���
- * Ҫ���л���Ч����ʱ�򣬱���ʹ��ͬһ��������
- * @author 
- *
- */
+
 public class SynchronizedTraditional {
 //	private static int a = 0; 
 	public static void main(String[] args){
@@ -44,19 +38,8 @@ public class SynchronizedTraditional {
 			}
 		}).start();
 	}
-	/**
-	 * ���ڲ��� ���Ե����ⲿ�� ������ �Ǿ�̬��Ա
-	 * @author 
-	 *
-	 */
+
 	 static class Outputer {
-		/**
-		 * ��ʽһ
-		 * ������ϼ���synchronized 
-		 * �������synchronized �ͻ���֡�
-		 * ���� �Ľ��
-		 * @param name
-		 */
 		private void output1(String name){
 			//System.out.println(a);
 			int length = name.length();
@@ -68,12 +51,6 @@ public class SynchronizedTraditional {
 			}
 		}
 		
-		/**
-		 * ������
-		 * ����ǰ����synchronized ���ͷ���һ���Ի��⣬
-		 * ��Ϊ��ʹ�õĶ��� ͬһ������this ����
-		 * @param name
-		 */
 		synchronized private void output2(String name){
 			int length = name.length();
 				for(int i=0;i<length;i++){
@@ -82,12 +59,6 @@ public class SynchronizedTraditional {
 			}
 		}
 		
-		/**
-		 * ������
-		 * ��̬����ǰ����synchronized ���ͷ���һ���Ի��⣬
-		 * ��Ϊ��ʹ�õĶ��� ͬһ������Outputer.class  �ֽ������
-		 * @param name
-		 */
 		 static synchronized private void output3(String name){
 			int length = name.length();
 				for(int i=0;i<length;i++){

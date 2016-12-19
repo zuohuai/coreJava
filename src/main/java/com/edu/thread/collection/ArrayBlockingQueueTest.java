@@ -36,12 +36,10 @@ public class ArrayBlockingQueueTest<T> {
 	}
 	
 	public void put(T e) throws Exception{
-		//��ָ����Ԫ�ز���˶��е�β��������ö�����������ȴ����õĿռ䡣
 		arrayBlockingQueue.put(e);
 	}
 	
 	public T get() throws Exception{
-		//��ȡ���Ƴ��˶��е�ͷ������Ԫ�ر�ÿ���֮ǰһֱ�ȴ�������б�Ҫ����
 		return arrayBlockingQueue.take();
 	}
 }

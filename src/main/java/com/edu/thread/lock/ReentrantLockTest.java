@@ -6,11 +6,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-/**
- * ��������ReentrantLock ��synchronized ������
- * @author zuohuai
- *
- */
+
 public class ReentrantLockTest {
 	public static void main(String[] args) throws InterruptedException {
 		final ExecutorService exec = Executors.newFixedThreadPool(4);

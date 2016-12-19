@@ -6,10 +6,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ConcurrentHashMapTest {
 	public static void main(String[] args){
 		ConcurrentHashMap<Integer,Person> map  = new ConcurrentHashMap<Integer,Person>();
-		map.put(1, Person.valueOf(1, "����")) ;
-		map.put(2, Person.valueOf(2, "����")) ;
+		map.put(1, Person.valueOf(1, "lilei")) ;
+		map.put(2, Person.valueOf(2, "hanmeimei")) ;
 		Person p = map.get(1);
-		p.setName("����");
+		p.setName("lily");
 		for(Entry<Integer,Person> entry :map.entrySet()){
 			System.out.println(entry.getKey());
 			System.out.println(entry.getValue().getName());

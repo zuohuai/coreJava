@@ -11,7 +11,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 
 public class CacheTest {
 	private Map<String,Object>  map = new HashMap<String,Object>();
-	private ReadWriteLock  rwl = new ReentrantReadWriteLock(); //��д��
+	private ReadWriteLock  rwl = new ReentrantReadWriteLock(); //
 	private Lock readLock = rwl.readLock();
 	private Lock writeLock = rwl.writeLock();
 	public static void main(String[] args){
