@@ -54,23 +54,23 @@ public class DisruptorTest {
 	
 	@Test(timeout=1000)
 	public void test_post_event1() throws Exception {
-		for(int i=0; i < 100000; i++){
+		for(int i=0; i < 1000000; i++){
 			com.edu.event.Event<String> event = com.edu.event.Event.valueOf(EVENT_NAME, "Hello World3");
 			eventBus1.post(event);
 		}
 	
-		Thread.sleep(5);
-		assertThat(count.get(), is(100000));
+		Thread.sleep(1000);
+		assertThat(count.get(), is(1000000));
 	}
 	
 	
 	@Test(timeout=1000)
 	public void test_post_event2() throws Exception {
-		for(int i=0; i < 100000; i++){
+		for(int i=0; i < 1000000; i++){
 			com.edu.disruptor.Event<String> event = com.edu.disruptor.Event.valueOf(EVENT_NAME, "Hello World3");
 			eventBus2.post(event);
 		}
-		Thread.sleep(5);
-		assertThat(count.get(), is(100000));
+		Thread.sleep(1000);
+		assertThat(count.get(), is(1000000));
 	}
 }
