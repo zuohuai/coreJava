@@ -52,7 +52,7 @@ public class DisruptorTest {
 	private static final String EVENT_NAME = "TEST_EVENT";
 	private static AtomicInteger count = new AtomicInteger();
 	
-	@Test(timeout=1000)
+	@Test(timeout=2000)
 	public void test_post_event1() throws Exception {
 		for(int i=0; i < 1000000; i++){
 			com.edu.event.Event<String> event = com.edu.event.Event.valueOf(EVENT_NAME, "Hello World3");
@@ -60,17 +60,19 @@ public class DisruptorTest {
 		}
 	
 		Thread.sleep(1000);
+		System.out.println(count.get());
 		assertThat(count.get(), is(1000000));
 	}
 	
 	
-	@Test(timeout=1000)
+	@Test(timeout=1500)
 	public void test_post_event2() throws Exception {
 		for(int i=0; i < 1000000; i++){
 			com.edu.disruptor.Event<String> event = com.edu.disruptor.Event.valueOf(EVENT_NAME, "Hello World3");
 			eventBus2.post(event);
 		}
 		Thread.sleep(1000);
+		System.out.println(count.get());
 		assertThat(count.get(), is(1000000));
 	}
 }

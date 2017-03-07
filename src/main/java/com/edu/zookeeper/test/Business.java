@@ -4,6 +4,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.springframework.stereotype.Component;
 
+import com.edu.dynamicdb.model.UserVo;
+import com.edu.protocol.User;
 import com.edu.zookeeper.aop.AutoRemoteLocked;
 import com.edu.zookeeper.aop.IsRemoteLock;
 
@@ -38,5 +40,19 @@ public class Business {
 			inUse.set(false);
 		}
 		return new String("Hello World");
+	}
+	
+	@AutoRemoteLocked
+	public void test(@IsRemoteLock UserVo user){
+		//
+		
+		//
+	}
+	
+	class UserVo {
+		
+		int age;
+		
+		String clazz;
 	}
 }

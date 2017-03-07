@@ -1,6 +1,7 @@
 package com.edu.collection;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -8,12 +9,16 @@ import java.util.List;
 import java.util.TreeSet;
 
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.edu.CodisTest;
 import com.edu.utils.json.JsonUtils;
-
 
 public class CollectionTest {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(CodisTest.class);
+	
 	@Test
 	public void test_array_deque() throws Exception {
 		Collection<String> deque = new ArrayDeque<>(100);
@@ -28,21 +33,83 @@ public class CollectionTest {
 	 * @throws Exception
 	 */
 	@Test
-	public void test_iterator() throws Exception{
+	public void test_iterator() throws Exception {
 		List<Integer> values = new LinkedList<>();
-		for(int i=0;i<10;i++){
+		for (int i = 0; i < 10; i++) {
 			values.add(i);
 		}
 		Iterator<Integer> iterator = values.iterator();
 		while (iterator.hasNext()) {
-			Integer data= iterator.next();
-			if(data < 5){
+			Integer data = iterator.next();
+			if (data < 5) {
 				iterator.remove();
 			}
 		}
 		printCollection(values);
 	}
-	
+
+	@Test
+	public void test_for_list_remove_exception() throws Exception {
+		List<Integer> arrayValues = new ArrayList<>();
+		fillList(arrayValues);
+		try {
+			for (Integer value : arrayValues) {
+				if (value % 2 == 0) {
+					arrayValues.remove(value);
+				}
+			}
+		} catch (Exception e) {
+			LOGGER.error("ArrayList-foreach 移除出现的异常是:", e);
+		}
+
+		List<Integer> linkedValues = new LinkedList<>();
+		fillList(linkedValues);
+		try {
+			for (Integer value : linkedValues) {
+				if (value % 2 == 0) {
+					linkedValues.remove(value);
+				}
+			}
+		} catch (Exception e) {
+			LOGGER.error("LinkedList-foreach 移除出现的异常是:", e);
+		}
+	}
+
+	@Test
+	public void test_for_list_remove_no_exception() throws Exception {
+		List<Integer> arrayValues = new ArrayList<>();
+		fillList(arrayValues);
+		try {
+			for (int i = 0; i < arrayValues.size(); i++) {
+				Integer value = arrayValues.get(i);
+				if (value % 2 == 0) {
+					arrayValues.remove(value);
+				}
+			}
+		} catch (Exception e) {
+			LOGGER.error("ArrayList-foreach 移除出现的异常是:", e);
+		}
+
+		List<Integer> linkedValues = new LinkedList<>();
+		fillList(linkedValues);
+		try {
+			for (int i = 0; i < linkedValues.size(); i++) {
+				Integer value = linkedValues.get(i);
+				if (value % 2 == 0) {
+					linkedValues.remove(value);
+				}
+			}
+		} catch (Exception e) {
+			LOGGER.error("LinkedList-foreach 移除出现的异常是:", e);
+		}
+	}
+
+	private void fillList(List<Integer> list) {
+		for (int i = 0; i < 100; i++) {
+			list.add(i);
+		}
+	}
+
 	@Test
 	public void test_tree_set() throws Exception {
 		TreeSet<TreeVo> treeVos = new TreeSet<>();
@@ -73,7 +140,7 @@ public class CollectionTest {
 		printTreeSet(content, treeVos);
 	}
 
-	private <T>  void printCollection(Collection<T> deque) {
+	private <T> void printCollection(Collection<T> deque) {
 		for (T t : deque) {
 			System.out.println(JsonUtils.object2String(t));
 		}

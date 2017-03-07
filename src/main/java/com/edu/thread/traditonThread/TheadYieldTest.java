@@ -5,7 +5,7 @@ public class TheadYieldTest {
 	public static void main(String[] args) throws Exception{
 
 		Thread t1 = new Thread(new TestYieldRunner(true), "有礼貌的线程one");
-		Thread t2 = new Thread(new TestYieldRunner(false), "无礼貌的线程two");
+		Thread t2 = new Thread(new TestYieldRunner(true), "无礼貌的线程two");
 		
 		t1.start();
 		t2.start();

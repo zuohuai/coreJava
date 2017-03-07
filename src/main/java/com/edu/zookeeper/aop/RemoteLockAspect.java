@@ -53,6 +53,13 @@ public class RemoteLockAspect {
 			return pjp.proceed(pjp.getArgs());
 		}
 
+		try {
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally {
+			lock.un
+		}
 		// 开始远程锁定
 		CuratorFramework client = null;
 		try {

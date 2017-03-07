@@ -15,17 +15,13 @@ public class CyclicBarrierterTest {
                     try {  
                         Thread.sleep((long)(Math.random()*10000));    
                         System.out.println("线程" + Thread.currentThread().getName() +   
-                                "即将到达集合地点1，当前已有" + (cb.getNumberWaiting()+1) + "个已经到达，" + (cb.getNumberWaiting()==2?"都到齐了，继续走啊":"正在等候"));                         
+                                "当前已有" + (cb.getNumberWaiting()+1) + "个选手就位，" + (cb.getNumberWaiting()==2?"选手都就位了，裁判开始比赛":"等候裁判开始比赛"));                         
                         cb.await();  
                           
                         Thread.sleep((long)(Math.random()*10000));    
                         System.out.println("线程" + Thread.currentThread().getName() +   
-                                "即将到达集合地点2，当前已有" + (cb.getNumberWaiting()+1) + "个已经到达，" + (cb.getNumberWaiting()==2?"都到齐了，继续走啊":"正在等候"));  
-                        cb.await();   
-                        Thread.sleep((long)(Math.random()*10000));    
-                        System.out.println("线程" + Thread.currentThread().getName() +   
-                                "即将到达集合地点3，当前已有" + (cb.getNumberWaiting() + 1) + "个已经到达，" + (cb.getNumberWaiting()==2?"都到齐了，继续走啊":"正在等候"));                       
-                        cb.await();                       
+                                "当前已有" + (cb.getNumberWaiting()+1) + "个选手完成比赛" + (cb.getNumberWaiting()==2?"裁判宣布-比赛结束":"等待比赛结束中……"));  
+                        cb.await();                         
                     } catch (Exception e) {  
                         e.printStackTrace();  
                     }                 

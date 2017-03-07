@@ -25,11 +25,10 @@ public class ForkJoinTest {
 	private static final String CONFIG = "config";
 	@Test
 	public void test_fork_join() throws Exception {
-		// 这个和 CompletionService 有啥区别
 		ForkJoinPool forkJoinPool = new ForkJoinPool();
 		List<TaskConfig> list = new ArrayList<TaskConfig>();
 		
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 128; i++) {
 			list.add(new ForkJoinTest.TaskConfig(i));
 		}
 		Future<MultiValueMap> result = forkJoinPool.submit(new ForkJoinTest.MyTask(list));

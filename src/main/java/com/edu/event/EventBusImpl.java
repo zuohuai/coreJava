@@ -36,15 +36,15 @@ public class EventBusImpl implements EventBus, EventBusImplMBean {
 
 	@Autowired(required = false)
 	@Qualifier("event_queue_size")
-	private Integer queueSize = 8192 * 2;
+	private Integer queueSize = 8192 * 10;
 	private BlockingQueue<Event<?>> eventQueue;
 
 	@Autowired(required = false)
 	@Qualifier("event_pool_size")
-	private Integer poolSize = 5;
+	private Integer poolSize = 50;
 	@Autowired(required = false)
 	@Qualifier("event_pool_max_size")
-	private Integer poolMaxSize = 10;
+	private Integer poolMaxSize = 50;
 	@Autowired(required = false)
 	@Qualifier("event_pool_alive_time")
 	private Integer poolKeepAlive = 60;

@@ -20,12 +20,29 @@
 	</properties>
 
 	<dependencies>
-	
-		<!-- apache collections-->
+		<!-- elasticsearch -->
 		<dependency>
-			  <groupId>commons-collections</groupId>
-			  <artifactId>commons-collections</artifactId>
-			  <version>3.2.2</version>
+			<groupId>org.elasticsearch.client</groupId>
+			<artifactId>transport</artifactId>
+			<version>5.1.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>2.7</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.7</version>
+		</dependency>
+
+		<!-- apache collections -->
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>3.2.2</version>
 		</dependency>
 		<!-- 整合mybatis -->
 		<dependency>

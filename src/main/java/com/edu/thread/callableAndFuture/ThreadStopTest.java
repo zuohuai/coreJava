@@ -50,6 +50,12 @@ public class ThreadStopTest {
 		Future<Object> future = theadPool.submit(new Callable<Object>(){
 			@Override
 			public Object call(){
+				try{
+					Thread.sleep(2000L);
+					//TimeUnit.SECONDS.sleep(1);
+				}catch(Exception e){
+					
+				}
 				while(!Thread.interrupted()){
 					long_time_execute();
 				}

@@ -109,6 +109,8 @@ public class EventBusImpl implements EventBus, EventBusImplMBean, ApplicationLis
 				if (!pool.awaitTermination(poolAwaitTime, TimeUnit.SECONDS)) {
 					logger.error("事件总线线程池无法完成关闭");
 				}
+				
+				//TODO 
 			}
 		} catch (InterruptedException e) {
 			logger.error("事件总线线程池关闭时线程被打断,强制关闭事件总线线程池");
