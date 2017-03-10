@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.junit.Test;
 
 import com.edu.java8.learning.filter.AppleFilter;
@@ -99,5 +100,43 @@ public class AppleFilterLambdaTest {
 		Thread t = new Thread(runnable);
 		t.start();
 		TimeUnit.SECONDS.sleep(2);
+	}
+
+	/**
+	 * 
+	 * test_comparable_apple:关于lambda 表达式 和 方法引用<br/>  
+	 *  
+	 * @author hison.zhang  
+	 * @throws Exception
+	 */
+	@Test
+	public void test_comparable_apple() throws Exception {
+		List<Apple> apples = initApples();
+		// 采用lambda 表达式
+		List<Apple> result = AppleFilterLambda.filter(apples, (Apple apple) -> "green".equals(apple.getColor()));
+
+		//采用匿名类来排序
+		result.sort(new Comparator<Apple>() {
+			@Override
+			public int compare(Apple o1, Apple o2) {
+				return new CompareToBuilder().append(o1.getWeight(), o2.getWeight()).toComparison();
+			}
+
+		});
+		
+		//采用lambda排序
+		result.sort((Apple o1, Apple o2) -> o1.getWeight() - o2.getWeight());
+		
+		//lambda简写，也很吊
+		result.sort( Comparator.comparing((Apple a) -> a.getWeight()));
+		
+		//采用方法引用
+		result.sort(Comparator.comparing(Apple::getWeight)
+						.reversed() //逆序
+						.thenComparing(Apple::getColor) //如果重量一样，则按照颜色排序
+				);
+		
+		//谓词符合 TODO
+		
 	}
 }
