@@ -20,6 +20,14 @@
 	</properties>
 
 	<dependencies>
+
+		<!-- kafka -->
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka_2.10</artifactId>
+			<version>0.8.2.2</version>
+		</dependency>
+
 		<!-- elasticsearch -->
 		<dependency>
 			<groupId>org.elasticsearch.client</groupId>
@@ -287,6 +295,7 @@
 	</dependencies>
 
 	<repositories>
+
 	</repositories>
 
 	<build>
