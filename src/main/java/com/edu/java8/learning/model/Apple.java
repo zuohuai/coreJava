@@ -10,6 +10,10 @@ public class Apple {
 
 	}
 
+	public Apple(Integer  weight) {
+		this.weight = weight;
+	}
+	
 	public Apple(String color, int weight) {
 		super();
 		this.color = color;
