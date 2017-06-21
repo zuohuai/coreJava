@@ -1,5 +1,6 @@
 package com.edu;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +25,9 @@ public class NedisTest {
 
 	@Before
 	public void before() {
-		
+		if(StringUtils.isEmpty("hello world")){
+			System.out.println("Hello World");
+		}
 	}
 	
 	/**
