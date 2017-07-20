@@ -1,0 +1,190 @@
+{
+  "code": 200,
+  "msg": "请求成功",
+  "data": {
+    "cartInfo": {
+      "expire_time": "1498469786",
+      "alive_time": "566",
+      "num": 1,
+      "count_limit": 5,
+      "lifetime": 600,
+      "count": 1,
+      "sku_count": 1,
+      "total": "100",
+      "has_goods_left": false,
+      "has_haitao": false,
+      "has_supplier": false,
+      "save_money": "0",
+      "amounts": {
+        "goodsTotal": "100"
+      },
+      "coupon_type": null,
+      "hasVipDeliveryGoods": true
+    },
+    "cartList": {
+      "0": {
+        "info": {
+          "user_id": null,
+          "warehouse": null,
+          "add_time": null,
+          "add_type": null,
+          "expire_time": null,
+          "count_limit": 0,
+          "lifetime": 0,
+          "jit_type": 0,
+          "supplier_id": "0",
+          "supplier_name": "唯品会",
+          "title": "唯品会发货",
+          "pre_name": "",
+          "supplier_shipping_fee": "0.00",
+          "weight": 0,
+          "count": 1,
+          "sku_count": 1,
+          "amounts": {
+            "goodsTotal": "100"
+          },
+          "sale_style": 0,
+          "is_haitao": 0,
+          "has_invoice": 0,
+          "area_freight_id": null,
+          "favourable_id": null,
+          "favourable_money": null,
+          "favourable_type": 0,
+          "favourable_small_money": null,
+          "is_free_postage": 0,
+          "freight_msg": "再购188元可免运费",
+          "freight_type": "0",
+          "sel_coupons": null,
+          "payable": "100",
+          "ex_fav_money": "0",
+          "code_bonus": {
+            "code_fav_enable": 0,
+            "code_fav_details": null
+          },
+          "id": "213952",
+          "custom": "gzhg"
+        },
+        "list": {
+          "331853434": {
+            "id": "215678",
+            "cart_id": "213952",
+            "product_id": "2015319166",
+            "size": "331853434",
+            "num": "1",
+            "suite_id": "",
+            "warehouse": "VIP_NH",
+            "add_time": "1498469186",
+            "is_gift": "0",
+            "product_info": {
+              "size_id": "331853434",
+              "size_name": "均码",
+              "id": "2015319166",
+              "name": "黑色牛皮时尚休闲单鞋 DCT商品",
+              "cat_id": "10401010",
+              "market_price": "100",
+              "vipshop_price": "100",
+              "special_price": "0",
+              "mobile_saved": "0",
+              "sale_price": {
+                "final_price": "100",
+                "final_save_price": "0",
+                "final_price_type": 0,
+                "final_price_tips": ""
+              },
+              "extTipsList": [
+                {
+                  "type": "8",
+                  "text": "不支持7天无理由退货"
+                }
+              ],
+              "free_goods": 0,
+              "buy_num_min": "1",
+              "buy_num_max": "2",
+              "small_image": "pdc/681/908/4200808901050908681/0/1715970-5.jpg",
+              "image": null,
+              "brand_id": "2016140058",
+              "ver_id": null,
+              "warehouse": "VIP_NH",
+              "standard": "0",
+              "sn": "1494230128634486",
+              "sale_style": "0",
+              "flash_purchase": "0",
+              "jit_type": "0",
+              "supplier_shipping_fee": "0",
+              "brand_name": "DCT档期（非联调）",
+              "supplier_name": "唯品会",
+              "pre_name": "",
+              "supplier_id": "0",
+              "v_sku_id": "8214923684411379713"
+            },
+            "oxo_style": "0",
+            "oxo_sale_area": "0"
+          }
+        },
+        "ex_fav_details": {},
+        "unable_active": {},
+        "normal_products": [
+          {
+            "id": "215678",
+            "cart_id": "213952",
+            "product_id": "2015319166",
+            "size": "331853434",
+            "num": "1",
+            "suite_id": "",
+            "warehouse": "VIP_NH",
+            "add_time": "1498469186",
+            "is_gift": "0",
+            "product_info": {
+              "size_id": "331853434",
+              "size_name": "均码",
+              "id": "2015319166",
+              "name": "黑色牛皮时尚休闲单鞋 DCT商品",
+              "cat_id": "10401010",
+              "market_price": "100",
+              "vipshop_price": "100",
+              "special_price": "0",
+              "mobile_saved": "0",
+              "sale_price": {
+                "final_price": "100",
+                "final_save_price": "0",
+                "final_price_type": 0,
+                "final_price_tips": ""
+              },
+              "extTipsList": [
+                {
+                  "type": "8",
+                  "text": "不支持7天无理由退货"
+                }
+              ],
+              "free_goods": 0,
+              "buy_num_min": "1",
+              "buy_num_max": "2",
+              "small_image": "pdc/681/908/4200808901050908681/0/1715970-5.jpg",
+              "image": null,
+              "brand_id": "2016140058",
+              "ver_id": null,
+              "warehouse": "VIP_NH",
+              "standard": "0",
+              "sn": "1494230128634486",
+              "sale_style": "0",
+              "flash_purchase": "0",
+              "jit_type": "0",
+              "supplier_shipping_fee": "0",
+              "brand_name": "DCT档期（非联调）",
+              "supplier_name": "唯品会",
+              "pre_name": "",
+              "supplier_id": "0",
+              "v_sku_id": "8214923684411379713"
+            },
+            "oxo_style": "0",
+            "oxo_sale_area": "0"
+          }
+        ],
+        "gift_active_msg": [],
+        "virtual_gift_active_msg": [],
+        "gift_bottom_list": null,
+        "virtual_gift_bottom_list": null
+      }
+    }
+  }
+}
